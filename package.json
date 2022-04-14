@@ -11,6 +11,7 @@
     "@types/react": "^16.14.24",
     "autoprefixer": "^10.4.4",
     "axios": "^0.26.1",
+    "client": "link:@types/react-dom/client",
     "postcss": "^8.4.12",
     "raviger": "^4.0.0",
     "react": "^18.0.0",
