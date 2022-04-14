@@ -1,14 +1,22 @@
+import { AxiosResponse } from "axios";
+import { setAuthTokens, isLoggedIn } from "axios-jwt";
 import React from "react";
 import AuthPage from "../components/AuthPage";
 import Button from "../components/Button";
 import FullInput from "../components/FullInput";
-import request from "../utils/api";
+import { request } from "../utils/api";
 
 const Login = () => {
   const [user, setUser] = React.useState({
     username: "",
     password: "",
   });
+
+  React.useEffect(() => {
+    if (isLoggedIn()) {
+      window.location.href = "/";
+    }
+  }, []);
 
   return (
     <AuthPage>
@@ -19,7 +27,15 @@ const Login = () => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          request.post("/auth/login/", user)
+          request
+            .post("/token/", user)
+            .then((response: AxiosResponse) => {
+              setAuthTokens({
+                accessToken: response.data.access,
+                refreshToken: response.data.refresh,
+              });
+            })
+            .then(() => (window.location.href = "/"));
         }}
       >
         <div className="space-y-4">

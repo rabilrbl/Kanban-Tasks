@@ -4,17 +4,18 @@ const Button = ({
   type,
   children,
   className,
-  ...extraProps
+  disabled,
 }: {
   type?: string;
   children: React.ReactNode;
   className?: string;
+  disabled?: boolean;
 }) => {
   switch (type) {
     case "fullGray":
       return (
         <div>
-          <button className={"w-full px-4 py-2 bg-gray-700 rounded-md text-gray-50 hover:bg-gray-600 "+className} {...extraProps}>
+          <button className={"w-full px-4 py-2 bg-gray-700 rounded-md text-gray-50 hover:bg-gray-600 "+className} disabled={disabled}>
             {children}
           </button>
         </div>
@@ -22,7 +23,7 @@ const Button = ({
     default:
       return (
         <div>
-          <button className={className} {...extraProps}>
+          <button className={className} disabled={disabled}>
             {children}
           </button>
         </div>

@@ -11,6 +11,7 @@ specifiers:
   '@types/react-dom': ^16.9.14
   autoprefixer: ^10.4.4
   axios: ^0.26.1
+  axios-jwt: ^1.7.6
   postcss: ^8.4.12
   raviger: ^4.0.0
   react: ^18.0.0
@@ -41,6 +42,7 @@ dependencies:
   '@types/react': 16.14.24
   autoprefixer: 10.4.4_postcss@8.4.12
   axios: 0.26.1
+  axios-jwt: 1.7.6_axios@0.26.1
   postcss: 8.4.12
   raviger: 4.0.0_react@18.0.0
   react: 18.0.0
@@ -2923,6 +2925,15 @@ packages:
   /axe-core/4.4.1:
     resolution: {integrity: sha512-gd1kmb21kwNuWr6BQz8fv6GNECPBnUasepcoLbekws23NVBLODdsClRZ+bQ8+9Uomf3Sm3+Vwn0oYG9NvwnJCw==}
     engines: {node: '>=4'}
+    dev: false
+
+  /axios-jwt/1.7.6_axios@0.26.1:
+    resolution: {integrity: sha512-T4/wbfC9wSJjyk4nECPvlMCVZgjIRxZUyxySeFvyXzI7D40YCgrH+31kT8z8HeQ0zDWwHNiDks0OzYXHdCkx/Q==}
+    peerDependencies:
+      axios: ^0.26.0
+    dependencies:
+      axios: 0.26.1
+      jwt-decode: 3.1.2
     dev: false
 
   /axios/0.26.1:
@@ -6136,6 +6147,10 @@ packages:
     dependencies:
       array-includes: 3.1.4
       object.assign: 4.1.2
+    dev: false
+
+  /jwt-decode/3.1.2:
+    resolution: {integrity: sha512-UfpWE/VZn0iP50d8cz9NrZLM9lSWhcJ+0Gt/nm4by88UL+J1SiKN8/5dkjMmbEzwL2CAe+67GsegCbIKtbp75A==}
     dev: false
 
   /kind-of/6.0.3:

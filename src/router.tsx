@@ -6,10 +6,12 @@ import Container from "./components/Container";
 import PageNotFound from "./pages/PageNotFound";
 import Signup from "./pages/Signup";
 import NavBar from "./components/NavBar";
+import Logout from "./pages/Logout";
 
 const routes = {
   "/": () => <Home />,
   "/login": () => <Login />,
+  "/logout": () => <Logout />,
   "/signup": () => <Signup />,
 };
 
@@ -26,8 +28,10 @@ function App() {
   const path = usePath("/");
   return (
     <>
-      {renderNav(path!)}
-      <Container>{route || <PageNotFound />}</Container>
+      <Container>
+        {renderNav(path!)}
+        {route || <PageNotFound />}
+      </Container>
     </>
   );
 }
