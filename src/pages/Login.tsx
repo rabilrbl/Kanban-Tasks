@@ -1,9 +1,10 @@
 import { AxiosResponse } from "axios";
 import { setAuthTokens, isLoggedIn } from "axios-jwt";
-import React from "react";
+import React, { useState } from "react";
 import AuthPage from "../components/AuthPage";
 import Button from "../components/Button";
 import FullInput from "../components/FullInput";
+import Spinner from "../components/icons/Spinner";
 import { request } from "../utils/api";
 
 const Login = () => {
@@ -18,6 +19,8 @@ const Login = () => {
     }
   }, []);
 
+  const [loading, setLoading] = useState(false);
+
   return (
     <AuthPage>
       <div>
@@ -27,15 +30,27 @@ const Login = () => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
+          setLoading(true);
           request
             .post("/token/", user)
             .then((response: AxiosResponse) => {
+              if (response.status !== 200){
+                throw new Error(
+                  response.data.message
+                )
+              }
               setAuthTokens({
                 accessToken: response.data.access,
                 refreshToken: response.data.refresh,
               });
             })
-            .then(() => (window.location.href = "/"));
+            .then(() => {
+              setLoading(false);
+              window.location.href = "/";
+            }).catch((e) => {
+              setLoading(false);
+              alert(e.message);
+            });
         }}
       >
         <div className="space-y-4">
@@ -75,7 +90,13 @@ const Login = () => {
             />
           </div>
           <div className="space-y-2">
-            <Button type="fullGray">Log in</Button>
+            <Button type="fullGray" disabled={loading}>
+              {loading ? (
+                <><Spinner />&nbsp;Loading...</>
+              ) : (
+                "Log in"
+              )}
+            </Button>
             <div>
               <a href="/signup">
                 Not a member? <b>Sign up</b>

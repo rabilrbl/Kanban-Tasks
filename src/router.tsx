@@ -7,6 +7,10 @@ import PageNotFound from "./pages/PageNotFound";
 import Signup from "./pages/Signup";
 import NavBar from "./components/NavBar";
 import Logout from "./pages/Logout";
+import HomeIcon from "./components/icons/HomeIcon";
+import Category from "./components/icons/Category";
+import TaskSquare from "./components/icons/TaskSquare";
+import HorizNavBar from "./components/HorizNavBar";
 
 const routes = {
   "/": () => <Home />,
@@ -15,23 +19,44 @@ const routes = {
   "/signup": () => <Signup />,
 };
 
-const renderNav = (path: string) => {
+const navLinks = [
+  {
+    name: "Home",
+    path: "/",
+    icon: <HomeIcon h="16" w="16" />,
+  },
+  {
+    name: "Boards",
+    path: "/boards",
+    icon: <Category h="16" w="16" />,
+  },
+  {
+    name: "To Do",
+    path: "/todo",
+    icon: <TaskSquare h="20" w="20" />,
+  },
+];
+
+const hideNavBar = (path: string) => {
   const hideNavPages = ["signup", "login"];
   if (hideNavPages.includes(path)) {
-    return null;
+    return false;
   }
-  return <NavBar />;
+  return true;
 };
-
 function App() {
   let route = useRoutes(routes);
   const path = usePath("/");
+  const hideNav = hideNavBar(path!);
   return (
     <>
-      <Container>
-        {renderNav(path!)}
-        {route || <PageNotFound />}
-      </Container>
+      <div className="flex">
+        {hideNav && <NavBar navLinks={navLinks} />}
+        <div className="flex-auto">
+          {hideNav && <HorizNavBar />}
+          <Container>{route || <PageNotFound />}</Container>
+        </div>
+      </div>
     </>
   );
 }

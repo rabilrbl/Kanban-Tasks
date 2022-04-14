@@ -7,7 +7,7 @@ export const request = axios.create({ baseURL: BASE_URL })
 
 
 const requestRefresh: TokenRefreshRequest = async (refreshToken: string): Promise<IAuthTokens | string> => {
-  const response = await axios.post(`${BASE_URL}/token/refresh_token`, { token: refreshToken })
+  const response = await axios.post(`${BASE_URL}/token/refresh/`, { refresh: refreshToken })
   return response.data.access
 }
 

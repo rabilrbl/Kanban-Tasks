@@ -1,6 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
+  '@headlessui/react': ^1.5.0
   '@tailwindcss/forms': ^0.5.0
   '@testing-library/jest-dom': ^5.16.4
   '@testing-library/react': ^11.2.7
@@ -9,6 +10,7 @@ specifiers:
   '@types/node': ^12.20.47
   '@types/react': ^16.14.24
   '@types/react-dom': ^16.9.14
+  add: ^2.0.6
   autoprefixer: ^10.4.4
   axios: ^0.26.1
   axios-jwt: ^1.7.6
@@ -17,6 +19,7 @@ specifiers:
   react: ^18.0.0
   react-dom: ^18.0.0
   react-scripts: 5.0.1
+  react-toastify: ^8.2.0
   tailwindcss: ^3.0.24
   typescript: ^4.6.3
   web-vitals: ^0.2.4
@@ -34,12 +37,14 @@ specifiers:
   workbox-streams: ^5.1.4
 
 dependencies:
+  '@headlessui/react': 1.5.0_react-dom@18.0.0+react@18.0.0
   '@testing-library/jest-dom': 5.16.4
   '@testing-library/react': 11.2.7_react-dom@18.0.0+react@18.0.0
   '@testing-library/user-event': 12.8.3
   '@types/jest': 26.0.24
   '@types/node': 12.20.47
   '@types/react': 16.14.24
+  add: 2.0.6
   autoprefixer: 10.4.4_postcss@8.4.12
   axios: 0.26.1
   axios-jwt: 1.7.6_axios@0.26.1
@@ -48,6 +53,7 @@ dependencies:
   react: 18.0.0
   react-dom: 18.0.0_react@18.0.0
   react-scripts: 5.0.1_react@18.0.0+typescript@4.6.3
+  react-toastify: 8.2.0_react-dom@18.0.0+react@18.0.0
   tailwindcss: 3.0.24
   typescript: 4.6.3
   web-vitals: 0.2.4
@@ -1537,6 +1543,17 @@ packages:
       - supports-color
     dev: false
 
+  /@headlessui/react/1.5.0_react-dom@18.0.0+react@18.0.0:
+    resolution: {integrity: sha512-aaRnYxBb3MU2FNJf3Ut9RMTUqqU3as0aI1lQhgo2n9Fa67wRu14iOGqx93xB+uMNVfNwZ5B3y/Ndm7qZGuFeMQ==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: ^16 || ^17 || ^18
+      react-dom: ^16 || ^17 || ^18
+    dependencies:
+      react: 18.0.0
+      react-dom: 18.0.0_react@18.0.0
+    dev: false
+
   /@humanwhocodes/config-array/0.9.5:
     resolution: {integrity: sha512-ObyMyWxZiCu/yTisA7uzx81s40xR2fD5Cg/2Kq7G02ajkNubJf6BopgDTmDyc3U7sXpNKM8cYOw7s7Tyr+DnCw==}
     engines: {node: '>=10.10.0'}
@@ -2686,6 +2703,10 @@ packages:
     hasBin: true
     dev: false
 
+  /add/2.0.6:
+    resolution: {integrity: sha1-JI8Kn25aUo7yKV2+7DBTITCuIjU=}
+    dev: false
+
   /address/1.1.2:
     resolution: {integrity: sha512-aT6camzM4xEA54YVJYSqxz1kv4IHnQZRtThJJHhUMRExaU5spC7jX5ugSwTaTgJliIgs4VhZOk7htClvQ/LmRA==}
     engines: {node: '>= 0.12.0'}
@@ -3374,6 +3395,11 @@ packages:
       string-width: 4.2.3
       strip-ansi: 6.0.1
       wrap-ansi: 7.0.0
+    dev: false
+
+  /clsx/1.1.1:
+    resolution: {integrity: sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA==}
+    engines: {node: '>=6'}
     dev: false
 
   /co/4.6.0:
@@ -7911,6 +7937,17 @@ packages:
       - webpack-cli
       - webpack-hot-middleware
       - webpack-plugin-serve
+    dev: false
+
+  /react-toastify/8.2.0_react-dom@18.0.0+react@18.0.0:
+    resolution: {integrity: sha512-Pg2Ju7NngAamarFvLwqrFomJ57u/Ay6i6zfLurt/qPynWkAkOthu6vxfqYpJCyNhHRhR4hu7+bySSeWWJu6PAg==}
+    peerDependencies:
+      react: '>=16'
+      react-dom: '>=16'
+    dependencies:
+      clsx: 1.1.1
+      react: 18.0.0
+      react-dom: 18.0.0_react@18.0.0
     dev: false
 
   /react/18.0.0:
