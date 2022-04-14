@@ -11,7 +11,6 @@ specifiers:
   '@types/react-dom': ^16.9.14
   autoprefixer: ^10.4.4
   axios: ^0.26.1
-  client: link:@types/react-dom/client
   postcss: ^8.4.12
   raviger: ^4.0.0
   react: ^18.0.0
@@ -42,7 +41,6 @@ dependencies:
   '@types/react': 16.14.24
   autoprefixer: 10.4.4_postcss@8.4.12
   axios: 0.26.1
-  client: link:@types/react-dom/client
   postcss: 8.4.12
   raviger: 4.0.0_react@18.0.0
   react: 18.0.0
