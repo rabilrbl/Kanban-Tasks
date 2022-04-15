@@ -11,12 +11,16 @@ import HomeIcon from "./components/icons/HomeIcon";
 import Category from "./components/icons/Category";
 import TaskSquare from "./components/icons/TaskSquare";
 import HorizNavBar from "./components/HorizNavBar";
+import {ToastContainer} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"
+import Boards from "./pages/Boards";
 
 const routes = {
   "/": () => <Home />,
   "/login": () => <Login />,
   "/logout": () => <Logout />,
   "/signup": () => <Signup />,
+  "/boards": () => <Boards />,
 };
 
 const navLinks = [
@@ -50,6 +54,18 @@ function App() {
   const hideNav = hideNavBar(path!);
   return (
     <>
+    <ToastContainer
+    position="top-right"
+    autoClose={5000}
+    hideProgressBar={false}
+    newestOnTop={false}
+    closeOnClick
+    rtl={false}
+    pauseOnFocusLoss
+    draggable
+    pauseOnHover
+    theme="dark"
+    />
       <div className="flex">
         {hideNav && <NavBar navLinks={navLinks} />}
         <div className="flex-auto">
