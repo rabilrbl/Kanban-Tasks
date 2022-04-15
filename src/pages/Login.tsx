@@ -6,6 +6,8 @@ import Button from "../components/Button";
 import FullInput from "../components/FullInput";
 import Spinner from "../components/icons/Spinner";
 import { request } from "../utils/api";
+import { navigate } from "raviger";
+import toast from "../utils/toast"
 
 const Login = () => {
   const [user, setUser] = React.useState({
@@ -34,22 +36,21 @@ const Login = () => {
           request
             .post("/token/", user)
             .then((response: AxiosResponse) => {
-              if (response.status !== 200){
-                throw new Error(
-                  response.data.message
-                )
-              }
+              if (response.status === 400 || response.status === 401) {
+                throw new Error("Invalid credentials");
+              } else if (response.status === 200){
               setAuthTokens({
                 accessToken: response.data.access,
                 refreshToken: response.data.refresh,
-              });
+              });}
             })
             .then(() => {
               setLoading(false);
-              window.location.href = "/";
+              toast.success("Logged in");
+              navigate("/")
             }).catch((e) => {
               setLoading(false);
-              alert(e.message);
+              toast.error(`Error logging in. ${e.message}`);
             });
         }}
       >
@@ -90,7 +91,7 @@ const Login = () => {
             />
           </div>
           <div className="space-y-2">
-            <Button type="fullGray" disabled={loading}>
+            <Button type="fullGray" disabled={loading || !user.username || !user.password}>
               {loading ? (
                 <><Spinner />&nbsp;Loading...</>
               ) : (
