@@ -9,6 +9,6 @@ export const getUser = async () => {
         email: data.email,
         first_name: data.first_name,
         last_name: data.last_name,
-        img: `https://ui-avatars.com/api/?name=${data.username}`
+        img: `https://ui-avatars.com/api/?name=${data.username}&size=50`
     };
 }

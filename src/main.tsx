@@ -11,8 +11,8 @@ import HomeIcon from "./components/icons/HomeIcon";
 import Category from "./components/icons/Category";
 import TaskSquare from "./components/icons/TaskSquare";
 import HorizNavBar from "./components/HorizNavBar";
-import {ToastContainer} from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Boards from "./pages/Boards";
 
 const routes = {
@@ -54,23 +54,26 @@ function App() {
   const hideNav = hideNavBar(path!);
   return (
     <>
-    <ToastContainer
-    position="top-right"
-    autoClose={5000}
-    hideProgressBar={false}
-    newestOnTop={false}
-    closeOnClick
-    rtl={false}
-    pauseOnFocusLoss
-    draggable
-    pauseOnHover
-    theme="dark"
-    />
       <div className="flex">
         {hideNav && <NavBar navLinks={navLinks} />}
         <div className="flex-auto">
           {hideNav && <HorizNavBar />}
-          <Container>{route || <PageNotFound />}</Container>
+          <Container>
+            <ToastContainer
+              position="top-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="dark"
+              style={{marginTop: "3rem"}}
+            />
+            {route || <PageNotFound />}
+          </Container>
         </div>
       </div>
     </>

@@ -3,7 +3,7 @@ export interface BoardType {
     id: number;
     title: string;
     description?: string;
-    created_at: string;
+    created_at?: string;
 }
 
 export interface BoardList {
