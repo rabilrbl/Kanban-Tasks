@@ -6,6 +6,7 @@ import AuthPage from "../components/AuthPage";
 import Button from "../components/Button";
 import FullInput from "../components/FullInput";
 import { request } from "../utils/api";
+import toast from "../utils/toast";
 
 const Signup = () => {
   const [user, setUser] = React.useState({
@@ -17,7 +18,8 @@ const Signup = () => {
 
   React.useEffect(() => {
     if (isLoggedIn()) {
-      window.location.href = "/";
+      toast.info("You already signed in!");
+      navigate("/");
     }
   }, []);
 
@@ -30,11 +32,18 @@ const Signup = () => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          request
+          toast.promise(request
             .post("/auth/registration/", user)
             .then((response: AxiosResponse) => {
-              navigate("/login");
-            });
+              if(response.status === 201){
+                toast.success("Successfully signed up!. Please Login with same credentials.");
+                navigate("/login");
+              }
+            }).catch((e) => {
+              toast.error(`Error signing up. ${e.message}`);
+            }),{
+              "pending": "Signing up..."
+            })
         }}
       >
         <div className="space-y-4">
@@ -91,7 +100,7 @@ const Signup = () => {
             }}
           />
           <div className="space-y-2">
-            <Button type="fullGray">Create Account</Button>
+            <Button type="fullGray" disabled={!user.username || !user.password1 || !user.password2}>Create Account</Button>
             <div>
               <a href="/login">
                 Already have an account? <b>Log In</b>
