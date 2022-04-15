@@ -6,7 +6,7 @@ const PageNotFound = () => {
     
         <div className="bg-inherit">
             <div className="flex h-screen">
-                <div className="m-auto text-center">
+                <div className="mx-auto text-center">
                     <div>
                         <svg width="631" height="379" viewBox="0 0 631 379" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g clipPath="url(#clip0)">
