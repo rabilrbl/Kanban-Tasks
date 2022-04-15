@@ -1,16 +1,9 @@
 import React from "react";
-import { request } from "../utils/api";
 
 const Home = () => {
   return (
     <div>
-      <button
-        onClick={(e) => {
-          request.get("/boards/");
-        }}
-      >
-        Request
-      </button>
+      <h1>Welcome to Home !</h1>
     </div>
   );
 };
