@@ -3,16 +3,10 @@ import React, { useEffect, useState } from "react";
 import { getUser } from "../utils/user";
 import YesNoModal from "./YesNoModal";
 import toast from "../utils/toast";
+import { User } from "../types/user";
 
 const HorizNavBar = () => {
-  const [user, setUser] = useState<{
-    pk: number;
-    img: string;
-    username: string;
-    email: string;
-    first_name: string;
-    last_name: string;
-  }>();
+  const [user, setUser] = useState<User>();
 
   useEffect(() => {
     getUser().then((data) => {
@@ -55,7 +49,7 @@ const HorizNavBar = () => {
                 />
                 <span className="ml-2 text-lg uppercase text-gray-50">{user?.username}</span>
           </div>
-              <button className="ml-auto cursor-pointer flex items-center justify-center text-white text-sm" onClick={() => {
+              <button className="ml-auto border-l-2 pl-4 cursor-pointer flex items-center justify-center text-white text-sm" onClick={() => {
                 toast((close) => {return<YesNoModal yes="Logout" no="Cancel" message="Are you sure you want to logout?" setOpen={() => close} yesCB={() => {
                   navigate("/logout");
               }} />}, {

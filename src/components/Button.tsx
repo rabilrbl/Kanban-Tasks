@@ -34,7 +34,7 @@ const Button = ({
         <button
           type="button"
           onClick={onClick}
-          className={"text-zinc-100 bg-zinc-800 hover:bg-zinc-700 focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 "+className}
+          className={"text-zinc-100 bg-gray-800 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 "+className}
         > 
           <CombinedShape h="18" w="18" />&nbsp;&nbsp;
           {children}

@@ -14,6 +14,7 @@ import HorizNavBar from "./components/HorizNavBar";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Boards from "./pages/Boards";
+import Board from "./pages/Board";
 
 const routes = {
   "/": () => <Home />,
@@ -21,6 +22,7 @@ const routes = {
   "/logout": () => <Logout />,
   "/signup": () => <Signup />,
   "/boards": () => <Boards />,
+  "/board/:id": ({id}: {id:string}) => <Board id={Number(id)} />,
 };
 
 const navLinks = [

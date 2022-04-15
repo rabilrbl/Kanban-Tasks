@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { BoardType } from "../types/boards";
 import { request } from "../utils/api";
 import toast from "../utils/toast";
+import FullInput from "./FullInput";
 import Modal from "./Modal";
 
 const BoardModal = ({
@@ -65,50 +66,36 @@ const BoardModal = ({
           }
         }}
       >
-        <h3 className="text-xl font-medium text-gray-900 ">
+        <h3>
           {mode ? "Edit Board" : "Create New Board"}
         </h3>
         <div>
-          <label
-            htmlFor="title"
-            className="block mb-2 text-sm font-medium text-gray-900"
-          >
-            Title
-          </label>
-          <input
-            type="text"
-            name="title"
-            id="title"
-            value={newBoard.title}
-            onChange={(e) =>
-              setNewBoard({ ...newBoard, title: e.target.value })
-            }
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-zinc-500 focus:border-zinc-500 block w-full p-2.5"
-            placeholder="Storming Board"
-            required
-          />
+        <FullInput
+              name="title"
+              type="text"
+              label="Title"
+              placeholder="Storming Board"
+              value={newBoard.title}
+              onChange={(e) =>
+                setNewBoard({ ...newBoard, title: e.target.value })
+              }
+            />
         </div>
         <div>
-          <label
-            htmlFor="password"
-            className="block mb-2 text-sm font-medium text-gray-900 "
-          >
-            Description
-          </label>
-          <textarea
-            name="description"
-            id="description"
-            value={newBoard.description}
+        <FullInput
+              name="description"
+              type="textarea"
+              label="Description"
+              value={newBoard.description}
             onChange={(e) =>
               setNewBoard({ ...newBoard, description: e.target.value })
             }
             placeholder="Type pretty things to describe your board"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-zinc-500 focus:border-zinc-500 block w-full p-2.5 "
-          />
+            />
         </div>
         <button
           type="submit"
-          className="w-full text-white bg-zinc-700 hover:bg-zinc-800 focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+          className="w-full text-white bg-zinc-800 hover:bg-zinc-700 focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
         >
           {mode ? "Update Board" : "Create Board"}
         </button>

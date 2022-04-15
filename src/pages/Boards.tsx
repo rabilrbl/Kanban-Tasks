@@ -37,7 +37,6 @@ function Boards() {
 
   return (
     <div className="space-y-5">
-      <BoardModal open={open} setOpen={setOpen} update={update} setUpdate={setUpdate} />
       <h1>My Boards</h1>
       <div className="flex items-center">
         <Button
@@ -53,24 +52,25 @@ function Boards() {
       <div className="grid grid-cols-3 grid-flow-row gap-4">
         {loading ? (
           <Loader />
-        ) : boards && boards.results.length > 0 ? (
-          boards.results.map((board: BoardType) => {
-            return (
+          ) : boards && boards.results.length > 0 ? (
+            boards.results.map((board: BoardType) => {
+              return (
               <BoardCard
-                id={board.id}
-                title={board.title}
-                description={board.description}
-                url={`/board/${board.id}`}
-                key={board.id}
-                update={update}
-                setUpdate={setUpdate}
+              id={board.id}
+              title={board.title}
+              description={board.description}
+              url={`/board/${board.id}`}
+              key={board.id}
+              update={update}
+              setUpdate={setUpdate}
               />
-            );
-          })
-        ) : (
-          <h4>No Boards Available</h4>
-        )}
+              );
+            })
+            ) : (
+              <h4>No Boards Available</h4>
+              )}
       </div>
+      <BoardModal open={open} setOpen={setOpen} update={update} setUpdate={setUpdate} />
     </div>
   );
 }
