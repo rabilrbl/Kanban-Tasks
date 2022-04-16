@@ -1,6 +1,9 @@
 import { BoardType } from "../types/boards";
 import { BoardAction } from "./actions/boardActions";
 
+// Ignore this for now
+// TODO: Add reducer for board
+
 export const BoardReducer = (state: BoardType[], action: BoardAction) => {
     switch (action.type) {
         case "SET_BOARDS":
