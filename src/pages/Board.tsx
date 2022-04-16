@@ -134,19 +134,19 @@ const Board = ({ id }: { id: number }) => {
                 {d.tasks.length > 0 ?
                   d.tasks.map((t, i) => {
                     return (
-                      <><TaskCard
+                      <>{t.id && <TaskCard
                         key={i}
                         boardId={id}
-                        id={t.id!}
+                        id={t.id}
                         title={t.title}
                         description={t.description!}
                         priority={t.priority}
                         update={update}
                         status={t.status}
                         setUpdate={setUpdate}
-                      /></>
+                      />}</>
                     );
-                  }): <span className="bold italic opacity-50 text-lg">No tasks found</span>}
+                  }): <span key={i} className="bold italic opacity-50 text-lg">No tasks found</span>}
               </TaskCardParent>
             )
           );
