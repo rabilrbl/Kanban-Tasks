@@ -3,10 +3,7 @@ import React from "react";
 import { request } from "../utils/api";
 import toast from "../utils/toast";
 import BoardModal from "./BoardModal";
-import Button from "./Button";
-import Edit from "./icons/Edit";
-import ThreeDots from "./icons/ThreeDots";
-import Trash from "./icons/Trash";
+import DotMenu from "./DotMenu";
 
 interface BoardCardProps {
   id: number;
@@ -25,45 +22,17 @@ const BoardCard = ({ title, description, url, id,  update, setUpdate }: BoardCar
       <BoardModal update={update} setUpdate={setUpdate} open={editOpen} setOpen={setEditOpen} mode="edit" id={id} title={title} description={description} />
       <div className="block px-6 py-4 w-full max-w-sm min-h-[10rem] rounded-lg border shadow-md bg-gray-800 border-gray-700 hover:bg-gray-700 space-y-4 drop-shadow-xl">
         <div className="flex justify-end">
-          <div className="relative">
-            <Button
-              className="ml-auto order-last"
-              onClick={() => setOpen(!open)}
-            >
-              <ThreeDots />
-            </Button>
-            {open && (
-              <div className="absolute  right-0 bg-gray-800 text-white border rounded shadow-xl text-sm -mt-2">
-                <ul className="p-2 space-y-1">
-                  <li>
-                    <button className="flex items-center hover:font-bold" onClick={() => {
-                      setOpen(false);
-                      setEditOpen(true);
-                    }}>
-                      <Edit />
-                      &nbsp;Edit
-                    </button>
-                  </li>
-                  <li>
-                    <button className="flex items-center hover:font-bold overflow-hidden" onClick={() =>{
-                      setOpen(false);
-                      const r = request.delete(`/boards/${id}`);
-                      toast.promise(r, {
-                        pending: "Deleting board...",
-                        success: "Board deleted",
-                        error: "Failed to delete board",
-                      }).then(() => {
-                        setUpdate(!update);
-                      })
-                    }}>
-                      <Trash />
-                      &nbsp;Delete
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            )}
-          </div>
+          <DotMenu open={open } setOpen={setOpen} setEditOpen={setEditOpen} deleteCB={() => {
+              setOpen(false);
+              const r = request.delete(`/boards/${id}`);
+              toast.promise(r, {
+                pending: "Archiving board...",
+                success: "Board archived",
+                error: "Failed to archive board",
+              }).then(() => {
+                setUpdate(!update);
+              })
+          }} />
         </div>
         <Link href={url} className="">
           <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">

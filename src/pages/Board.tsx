@@ -17,6 +17,7 @@ const Board = ({ id }: { id: number }) => {
   const [progress, setProgress] = useState<StatusTask>();
   const [done, setDone] = useState<StatusTask>();
   const [open, setOpen] = useState(false);
+  const [update, setUpdate]  = useState(false);
   useEffect(() => {
     request
       .get(`/boards/${id}/`)
@@ -63,7 +64,7 @@ const Board = ({ id }: { id: number }) => {
       .finally(() => {
         setLoading(false);
       });
-  }, [id]);
+  }, [id, update]);
 
   useEffect(() => {
     request
@@ -90,7 +91,7 @@ const Board = ({ id }: { id: number }) => {
       .finally(() => {
         setLoading(false);
       });
-  }, [id]);
+  }, [id, update]);
 
   useEffect(() => {
     request
@@ -117,7 +118,7 @@ const Board = ({ id }: { id: number }) => {
       .finally(() => {
         setLoading(false);
       });
-  }, [id]);
+  }, [id, update]);
 
   return (
     <div className="space-y-5">
@@ -143,12 +144,17 @@ const Board = ({ id }: { id: number }) => {
                 {d.tasks.length > 0 ?
                   d.tasks.map((t, i) => {
                     return (
-                      <TaskCard
+                      <><TaskCard
                         key={i}
+                        boardId={id}
+                        id={t.id!}
                         title={t.title}
                         description={t.description!}
                         priority={t.priority}
-                      />
+                        update={update}
+                        status={t.status}
+                        setUpdate={setUpdate}
+                      /></>
                     );
                   }): <span className="bold italic opacity-50 text-lg">No tasks found</span>}
               </TaskCardParent>
@@ -156,7 +162,7 @@ const Board = ({ id }: { id: number }) => {
           );
         })}
       </div>
-      <TaskModal boardId={id} open={open} setOpen={setOpen} />
+      <TaskModal update={update} setUpdate={setUpdate} boardId={id} open={open} setOpen={setOpen} />
     </div>
   );
 };

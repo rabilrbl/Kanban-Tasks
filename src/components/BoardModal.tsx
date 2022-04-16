@@ -34,6 +34,7 @@ const BoardModal = ({
       <form
         className="px-6 pb-4 space-y-6 lg:px-8 sm:pb-6 xl:pb-8"
         onSubmit={(e) => {
+          setOpen(false);
           e.preventDefault();
           if (mode) {
             const r = request.put(`/boards/${id}/`, newBoard).then(() => {
@@ -43,9 +44,7 @@ const BoardModal = ({
               pending: "Updating board...",
               success: "Board updated successfully",
               error: "Failed to update board",
-            }).then(() => {
-                setOpen(false);
-            });
+            })
           } else {
             const r = request
               .post("/boards/", newBoard)
@@ -53,7 +52,6 @@ const BoardModal = ({
                 if (response.status === 201) {
                   toast.success("Board created successfully");
                 //   navigate(`/boards/${response.data.id}`);
-                    setOpen(false);
                   setUpdate(!update);
                 }
               })
