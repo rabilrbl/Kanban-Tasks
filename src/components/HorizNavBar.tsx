@@ -49,7 +49,7 @@ const HorizNavBar = () => {
                 />
                 <span className="ml-2 text-lg capitalize text-gray-50">{user?.name}</span>
           </div>
-              <button className="ml-auto border-l-2 pl-4 cursor-pointer flex items-center justify-center text-white text-sm" onClick={() => {
+              <button className="ml-auto border-l-2 pl-4 cursor-pointer flex items-center justify-center text-white text-xs sm:text-sm" onClick={() => {
                 toast((close) => {return<YesNoModal yes="Logout" no="Cancel" message="Are you sure you want to logout?" setOpen={() => close} yesCB={() => {
                   navigate("/logout");
               }} />}, {

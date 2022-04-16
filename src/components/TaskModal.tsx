@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { priority, status } from "../types/tasks";
+import { AxiosResponse } from "axios";
+import React, { useState, useEffect } from "react";
+import { priority, status, TaskOptions } from "../types/tasks";
 import { Task } from "../types/tasks";
 import { request } from "../utils/api";
 import toast from "../utils/toast";
@@ -18,7 +19,7 @@ type Props = {
   setOpen: (open: boolean) => void;
     update: boolean;
     setUpdate: (update: boolean) => void;
-    todoOnly?: boolean;
+  todoOnly?: boolean;
 };
 
 const TaskModal = (props: Props) => {
@@ -45,6 +46,20 @@ const TaskModal = (props: Props) => {
     board: boardId,
   });
 
+  const [options, setOptions] = useState<TaskOptions>()
+
+  useEffect(() => {
+    if(todoOnly) {
+        request.get("/list/boards").then((response: AxiosResponse) => {
+          if(response.status === 200) {
+            setOptions(response.data.boards)
+          }
+        }).catch((err) => {
+          toast.error(`Failed to fetch boards list from server. You may face errors when creating form! Reason: ${err}`)
+        })
+    }
+  } ,[todoOnly])
+
   return (
     <Modal isOpen={open} onClose={() => setOpen(false)}>
       <form
@@ -62,7 +77,7 @@ const TaskModal = (props: Props) => {
                 success: "Task updated successfully",
                 error: "Failed to task board",
               })
-          } else {
+          } else if (boardId) {
             const r = request
               .post(`/boards/${boardId}/tasks/`, task)
               .then((response) => {
@@ -108,7 +123,7 @@ const TaskModal = (props: Props) => {
             placeholder="Type pretty things to describe your task"
           />
         </div>
-        <div className={todoOnly ? "invisible" : ""}>
+        <div>
         <FullInput
             name="status"
             type="select"
@@ -132,6 +147,21 @@ const TaskModal = (props: Props) => {
             options={[{ label: "Low", value: "low" }, { label: "Medium", value: "medium" }, { label: "High", value: "high" }]}
           />
         </div>
+        {todoOnly && <div>
+        <FullInput
+            name="board"
+            type="select"
+            label="Board"
+            value={task.board?.toString()}
+            required={true}
+            onChange={(e) =>
+              setTask({ ...task, board: Number(e.target.value) })
+            }
+            options={options?.map((o) => {
+              return {label: o.title, value: o.id.toString()}
+            })}
+          />
+        </div>}
         <button
           type="submit"
           className="w-full text-white bg-zinc-800 hover:bg-zinc-700 focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"

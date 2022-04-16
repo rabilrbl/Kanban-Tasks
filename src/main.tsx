@@ -56,6 +56,7 @@ function App() {
   let route = useRoutes(routes);
   const path = usePath("/");
   const hideNav = hideNavBar(path!);
+
   return (
     <>
       <div className="flex">
@@ -75,6 +76,7 @@ function App() {
               pauseOnHover
               theme="dark"
               style={{marginTop: "3rem"}}
+              limit={4}
             />
             {route || <PageNotFound />}
           </Container>

@@ -15,7 +15,7 @@ const TaskSquare = (props: Props) => {
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g opacity="0.6">
+      <g opacity="1">
         <path
           d="M12.3701 8.87988H17.6201"
           stroke="white"

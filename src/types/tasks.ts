@@ -19,3 +19,15 @@ export interface StatusTask {
     count: number;
     tasks: Task[];
 }
+
+export type GridProps = {
+    update: boolean;
+    setUpdate: (update: boolean) => void;
+    task: Task;
+    onDone: (id: number, status: "completed" | "pending") => void;
+  };
+
+export type TaskOptions = {
+    id: number;
+    title: string;
+}[]

@@ -1,10 +1,10 @@
 import React from "react";
 
 interface Props {
-	className?: string;
-	h: string;
-	w: string;
-  }
+  className?: string;
+  h: string;
+  w: string;
+}
 
 const Category = (props: Props) => {
   return (
