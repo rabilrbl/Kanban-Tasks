@@ -4,6 +4,7 @@ import Button from "../components/Button";
 import Loader from "../components/ContentLoader";
 import TaskCard from "../components/TaskCard";
 import TaskCardParent from "../components/TaskCardParent";
+import TaskModal from "../components/TaskModal";
 import { BoardType } from "../types/boards";
 import { StatusTask } from "../types/tasks";
 import { request } from "../utils/api";
@@ -15,6 +16,7 @@ const Board = ({ id }: { id: number }) => {
   const [todo, setTodo] = useState<StatusTask>();
   const [progress, setProgress] = useState<StatusTask>();
   const [done, setDone] = useState<StatusTask>();
+  const [open, setOpen] = useState(false);
   useEffect(() => {
     request
       .get(`/boards/${id}/`)
@@ -38,7 +40,7 @@ const Board = ({ id }: { id: number }) => {
 
   useEffect(() => {
     request
-      .get(`/tasks/?board=${id}&status=pending`)
+      .get(`/boards/${id}/tasks/?status=pending`)
       .then((response: AxiosResponse) => {
         if (response.status === 200) {
           return response.data;
@@ -65,7 +67,7 @@ const Board = ({ id }: { id: number }) => {
 
   useEffect(() => {
     request
-      .get(`/tasks/?board=${id}&status=in_progress`)
+      .get(`/boards/${id}/tasks/?status=in_progress`)
       .then((response: AxiosResponse) => {
         if (response.status === 200) {
           return response.data;
@@ -92,7 +94,7 @@ const Board = ({ id }: { id: number }) => {
 
   useEffect(() => {
     request
-      .get(`/tasks/?board=${id}&status=completed`)
+      .get(`/boards/${id}/tasks/?status=completed`)
       .then((response: AxiosResponse) => {
         if (response.status === 200) {
           return response.data;
@@ -125,7 +127,7 @@ const Board = ({ id }: { id: number }) => {
           className="ml-auto order-last"
           type="newBoard"
           onClick={() => {
-            toast.info("Button clicked");
+            setOpen(true);
           }}
         >
           New Task
@@ -134,7 +136,7 @@ const Board = ({ id }: { id: number }) => {
       <div className="grid grid-cols-3 gap-4">
         {[todo, progress, done].map((d, i) => {
           return loading ? (
-            <Loader />
+            <Loader key={i} />
           ) : (
             d && (
               <TaskCardParent key={i} heading={d.heading} count={d.count}>
@@ -154,6 +156,7 @@ const Board = ({ id }: { id: number }) => {
           );
         })}
       </div>
+      <TaskModal boardId={id} open={open} setOpen={setOpen} />
     </div>
   );
 };
