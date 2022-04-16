@@ -23,7 +23,7 @@ const Home = () => {
   useEffect(() => {
     if (isLoggedIn()) {
       request
-        .get("/tasks/count/")
+        .get("/count/")
         .then((response: AxiosResponse) => {
           if (response.status === 200) {
             setTaskInfo({
@@ -152,7 +152,7 @@ const Home = () => {
           {taskLoading ? (
             <Loader />
           ) : (
-            tasks?.map((task) => {
+            tasks && tasks.length > 0 ? tasks?.map((task) => {
               return (
                 <div
                   key={task.id}
@@ -160,11 +160,11 @@ const Home = () => {
                 >
                   <h5 className="mr-5">{task.title}</h5>
                   <div className="flex items-center space-x-5">
-                    <SmallBadge text={task.priority} /> <span className="text-sm">on {task.board.title}</span>
+                    <SmallBadge text={task.priority} /> <span className="text-sm">on {task.board_title}</span>
                   </div>
                 </div>
               );
-            })
+            }) : <h5>No tasks found</h5>
           )}
         </div>
       </div>

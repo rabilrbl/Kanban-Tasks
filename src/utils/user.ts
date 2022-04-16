@@ -5,6 +5,7 @@ export const getUser = async () => {
     const data = response.data;
     return {
         pk: data.pk,
+        name: data.name,
         username: data.username,
         email: data.email,
         first_name: data.first_name,
