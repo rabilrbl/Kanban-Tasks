@@ -10,6 +10,7 @@ import { request } from "../utils/api";
 import { AxiosResponse } from "axios";
 import Loader from "../components/ContentLoader";
 import SmallBadge from "../components/SmallBadge";
+import GridFlow from "../components/GridFlow";
 
 const Home = () => {
   const [taskInfo, setTaskInfo] = useState<{
@@ -127,7 +128,7 @@ const Home = () => {
           <span className=" capitalize">{taskInfo?.user}</span>
         </h2>
       </div>
-      <div className="grid grid-cols-3 gap-5">
+      <GridFlow>
         {taskInfo?.tasks.map((task, index) => {
           return (
             <div
@@ -142,7 +143,7 @@ const Home = () => {
             </div>
           );
         })}
-      </div>
+      </GridFlow>
       <div className="space-y-4">
         <div>
           <h3>My Tasks</h3>

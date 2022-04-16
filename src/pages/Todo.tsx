@@ -1,6 +1,7 @@
 import { AxiosResponse } from "axios";
 import React, { useState, useEffect } from "react";
 import Loader from "../components/ContentLoader";
+import GridFlow from "../components/GridFlow";
 import PageDiv from "../components/PageDiv";
 // import TaskModal from "../components/TaskModal";
 import TodoCard from "../components/TodoCard";
@@ -35,9 +36,9 @@ const Todo = (props: Props) => {
             toastId: "tasks-fetch-error",
           });
         }
-      }).finally(() => setLoading(false));
+      })
+      .finally(() => setLoading(false));
   }, [update]);
-
 
   useEffect(() => {
     request("/tasks/?status=completed")
@@ -56,29 +57,33 @@ const Todo = (props: Props) => {
             toastId: "tasks-fetch-error",
           });
         }
-      }).finally(() => setDoneLoading(false));
-  }, [update])
+      })
+      .finally(() => setDoneLoading(false));
+  }, [update]);
 
   const onDone = (id: number, status: "pending" | "completed") => {
-    if(status === "pending"){
-      let task = doneTasks?.find(task => task.id === id);
-      setDoneTasks(doneTasks?.filter(task => task.id !== id));
+    if (status === "pending") {
+      let task = doneTasks?.find((task) => task.id === id);
+      setDoneTasks(doneTasks?.filter((task) => task.id !== id));
       task!.status = status;
       todoTasks && setTodoTasks([...todoTasks, task!]);
     } else if (status === "completed") {
-      let task = todoTasks?.find(task => task.id === id);
-      setTodoTasks(todoTasks?.filter(task => task.id !== id));
+      let task = todoTasks?.find((task) => task.id === id);
+      setTodoTasks(todoTasks?.filter((task) => task.id !== id));
       task!.status = status;
       doneTasks && setDoneTasks([...doneTasks, task!]);
     }
     request.patch(`/tasks/${id}/`, { status: status }).catch((e) => {
       if (e) {
-        toast.error(`Failed to update task, Your changes won't be reflected on server. Reason: ${e.message}`, {
-          toastId: "task-status-update-error",
-        });
+        toast.error(
+          `Failed to update task, Your changes won't be reflected on server. Reason: ${e.message}`,
+          {
+            toastId: "task-status-update-error",
+          }
+        );
       }
     });
-  }
+  };
 
   return (
     <PageDiv
@@ -88,17 +93,50 @@ const Todo = (props: Props) => {
         toast.info("Hello there!");
       }}
     >
-      <div className="grid grid-cols-3 gap-4">
-      {loading ? <><Loader /><Loader /><Loader /></> : todoTasks?.map((task, i) => { return <React.Fragment key={i}>
-        <TodoCard update={update} onDone={onDone} setUpdate={setUpdate} task={task} />
-      </React.Fragment>})}
-      {doneLoading ? <><Loader /><Loader /><Loader /></> : doneTasks?.map((task, i) => { return <React.Fragment key={i}>
-        <TodoCard update={update} onDone={onDone} setUpdate={setUpdate} task={task} />
-      </React.Fragment>})}
+      <GridFlow>
+        {loading ? (
+          <>
+            <Loader />
+            <Loader />
+            <Loader />
+          </>
+        ) : (
+          todoTasks?.map((task, i) => {
+            return (
+              <React.Fragment key={i}>
+                <TodoCard
+                  update={update}
+                  onDone={onDone}
+                  setUpdate={setUpdate}
+                  task={task}
+                />
+              </React.Fragment>
+            );
+          })
+        )}
+        {doneLoading ? (
+          <>
+            <Loader />
+            <Loader />
+            <Loader />
+          </>
+        ) : (
+          doneTasks?.map((task, i) => {
+            return (
+              <React.Fragment key={i}>
+                <TodoCard
+                  update={update}
+                  onDone={onDone}
+                  setUpdate={setUpdate}
+                  task={task}
+                />
+              </React.Fragment>
+            );
+          })
+        )}
+      </GridFlow>
 
-        </div>
-
-        {/* <TaskModal update={update} setUpdate={setUpdate} boardId={tasks[0].id!} open={open} setOpen={setOpen} todoOnly={true} /> */}
+      {/* <TaskModal update={update} setUpdate={setUpdate} boardId={tasks[0].id!} open={open} setOpen={setOpen} todoOnly={true} /> */}
     </PageDiv>
   );
 };
