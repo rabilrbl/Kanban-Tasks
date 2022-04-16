@@ -8,7 +8,7 @@ import Modal from "./Modal";
 
 type Props = {
   mode?: "edit";
-  boardId?: number;
+  boardId: number;
   id?: number;
   title?: string;
   description?: string;
@@ -16,8 +16,8 @@ type Props = {
   priority?: priority;
   open: boolean;
   setOpen: (open: boolean) => void;
-  //   update?: boolean;
-  //   setUpdate?: (update: boolean) => void;
+    update: boolean;
+    setUpdate: (update: boolean) => void;
 };
 
 const TaskModal = (props: Props) => {
@@ -31,8 +31,8 @@ const TaskModal = (props: Props) => {
     description,
     status,
     priority,
-    //   update,
-    //   setUpdate,
+      update,
+      setUpdate,
   } = props;
 
   const [task, setTask] = useState<Task>({
@@ -40,7 +40,7 @@ const TaskModal = (props: Props) => {
     description: description ? description : "",
     status: status ? status : "pending",
     priority: priority ? priority : "low",
-    board: boardId ? boardId : 0,
+    board: boardId,
   });
 
   return (
@@ -48,10 +48,11 @@ const TaskModal = (props: Props) => {
       <form
         className="px-6 pb-4 space-y-6 lg:px-8 sm:pb-6 xl:pb-8"
         onSubmit={(e) => {
+          setOpen(false);
           e.preventDefault();
           if (mode && id) {
             const r = request.put(`/boards/${boardId}/tasks/${id}/`, task).then(() => {
-              // setUpdate(!update
+              setUpdate(!update)
             });
             toast
               .promise(r, {
@@ -59,9 +60,6 @@ const TaskModal = (props: Props) => {
                 success: "Task updated successfully",
                 error: "Failed to task board",
               })
-              .then(() => {
-                setOpen(false);
-              });
           } else {
             const r = request
               .post(`/boards/${boardId}/tasks/`, task)
@@ -70,7 +68,7 @@ const TaskModal = (props: Props) => {
                   toast.success("Task created successfully");
                   //   navigate(`/boards/${response.data.id}`);
                   setOpen(false);
-                  //   setUpdate(!update);
+                    setUpdate(!update);
                 }
               })
               .catch((e) => {
@@ -90,6 +88,7 @@ const TaskModal = (props: Props) => {
             label="Title"
             placeholder="Task Title"
             value={task.title}
+            required={true}
             onChange={(e) =>
               setTask({ ...task, title: e.target.value })
             }
