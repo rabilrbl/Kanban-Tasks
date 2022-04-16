@@ -15,6 +15,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Boards from "./pages/Boards";
 import Board from "./pages/Board";
+import Todo from "./pages/Todo";
 
 const routes = {
   "/": () => <Home />,
@@ -23,6 +24,7 @@ const routes = {
   "/signup": () => <Signup />,
   "/boards": () => <Boards />,
   "/board/:id": ({id}: {id:string}) => <Board id={Number(id)} />,
+  "/todo": () => <Todo />,
 };
 
 const navLinks = [

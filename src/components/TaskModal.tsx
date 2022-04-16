@@ -18,6 +18,7 @@ type Props = {
   setOpen: (open: boolean) => void;
     update: boolean;
     setUpdate: (update: boolean) => void;
+    todoOnly?: boolean;
 };
 
 const TaskModal = (props: Props) => {
@@ -33,6 +34,7 @@ const TaskModal = (props: Props) => {
     priority,
       update,
       setUpdate,
+      todoOnly,
   } = props;
 
   const [task, setTask] = useState<Task>({
@@ -106,7 +108,7 @@ const TaskModal = (props: Props) => {
             placeholder="Type pretty things to describe your task"
           />
         </div>
-        <div>
+        <div className={todoOnly ? "invisible" : ""}>
         <FullInput
             name="status"
             type="select"

@@ -32,36 +32,36 @@ const FullInput = ({
           {label}
         </label>
       )}
-      {(type === "text" && <input
-        name={name}
-        type={type}
-        value={value}
-        className="w-full px-4 py-2 drop-shadow-lg text-gray-800 font-medium border-none border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-800"
-        placeholder={placeholder}
-        onChange={onChange}
-        required={required}
-        {...extraProps}
-      />) || (
+      {(type === "textarea" &&
+        <textarea
+          name={name}
+          value={value}
+          className="w-full px-4 py-2 drop-shadow-lg text-gray-800 font-medium border-2 focus:border-gray-200 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-800"
+          placeholder={placeholder}
+          onChange={onChange}
+          required={required}
+          {...extraProps}
+        />) || (
         type === "select" && <select
         name={name}
         value={value}
         onChange={onChange}
         required={required}
-        className="w-full px-4 py-2 drop-shadow-lg text-gray-800 font-medium border-none border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-800"
+        className="w-full px-4 py-2 drop-shadow-lg text-gray-800 font-medium border-2 focus:border-gray-200 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-800"
         >
         {options?.map((op, i) => <option key={i} value={op.value}>{op.label}</option>)}
         </select>
       ) || (
-        type === "textarea" &&
-        <textarea
-          name={name}
-          value={value}
-          className="w-full px-4 py-2 drop-shadow-lg text-gray-800 font-medium border-none border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-800"
-          placeholder={placeholder}
-          onChange={onChange}
-          required={required}
-          {...extraProps}
-        />
+        <input
+        name={name}
+        type={type}
+        value={value}
+        className="w-full px-4 py-2 drop-shadow-lg text-gray-800 font-medium border-2 focus:border-gray-200 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-800"
+        placeholder={placeholder}
+        onChange={onChange}
+        required={required}
+        {...extraProps}
+      />
       )}
     </div>
   );

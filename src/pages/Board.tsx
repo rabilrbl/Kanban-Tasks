@@ -1,7 +1,7 @@
 import { AxiosResponse } from "axios";
 import React, { useState, useEffect } from "react";
-import Button from "../components/Button";
 import Loader from "../components/ContentLoader";
+import PageDiv from "../components/PageDiv";
 import TaskCard from "../components/TaskCard";
 import TaskCardParent from "../components/TaskCardParent";
 import TaskModal from "../components/TaskModal";
@@ -121,19 +121,9 @@ const Board = ({ id }: { id: number }) => {
   }, [id, update]);
 
   return (
-    <div className="space-y-5">
-      <h1>{board?.title}</h1>
-      <div className="flex items-center">
-        <Button
-          className="ml-auto order-last"
-          type="newBoard"
-          onClick={() => {
+      <PageDiv heading={board?.title!} buttonName="New Task" buttonCB={() => {
             setOpen(true);
-          }}
-        >
-          New Task
-        </Button>
-      </div>
+          }} >
       <div className="grid grid-cols-3 gap-4">
         {[todo, progress, done].map((d, i) => {
           return loading ? (
@@ -163,7 +153,7 @@ const Board = ({ id }: { id: number }) => {
         })}
       </div>
       <TaskModal update={update} setUpdate={setUpdate} boardId={id} open={open} setOpen={setOpen} />
-    </div>
+      </PageDiv>
   );
 };
 

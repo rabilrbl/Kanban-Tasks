@@ -156,6 +156,7 @@ const Home = () => {
               return (
                 <div
                   key={task.id}
+                  onClick={() => navigate(`/board/${task.board}`)}
                   className="py-4 px-8 flex items-center justify-start gap-2 bg-gray-800 text-gray-50 rounded-lg drop-shadow-lg hover:bg-gray-700 cursor-pointer"
                 >
                   <h5 className="mr-5">{task.title}</h5>

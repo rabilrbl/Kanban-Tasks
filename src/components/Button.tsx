@@ -1,19 +1,18 @@
 import React from "react";
 import CombinedShape from "./icons/CombinedShape";
 
-const Button = ({
-  type,
-  children,
-  className,
-  disabled,
-  onClick,
-}: {
-  type?: string;
+type buttonType = "fullGray" | "newBoard";
+
+type Props = {
+  type?: buttonType;
   onClick?: () => void;
   children: React.ReactNode;
   className?: string;
   disabled?: boolean;
-}) => {
+};
+
+const Button = (props: Props) => { 
+  const { type, children, className, disabled, onClick } = props;
   switch (type) {
     case "fullGray":
       return (
@@ -34,9 +33,13 @@ const Button = ({
         <button
           type="button"
           onClick={onClick}
-          className={"text-zinc-100 bg-gray-800 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 "+className}
-        > 
-          <CombinedShape h="18" w="18" />&nbsp;&nbsp;
+          className={
+            "text-zinc-100 bg-gray-800 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 " +
+            className
+          }
+        >
+          <CombinedShape h="18" w="18" />
+          &nbsp;&nbsp;
           {children}
         </button>
       );

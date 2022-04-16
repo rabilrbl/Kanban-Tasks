@@ -6,7 +6,7 @@ import Button from "../components/Button";
 import FullInput from "../components/FullInput";
 import Spinner from "../components/icons/Spinner";
 import { request } from "../utils/api";
-import { navigate } from "raviger";
+import { Link, navigate } from "raviger";
 import toast from "../utils/toast"
 
 const Login = () => {
@@ -102,9 +102,9 @@ const Login = () => {
               )}
             </Button>
             <div>
-              <a href="/signup">
+              <Link href="/signup">
                 Not a member? <b>Sign up</b>
-              </a>
+              </Link>
             </div>
           </div>
         </div>

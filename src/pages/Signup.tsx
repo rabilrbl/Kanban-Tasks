@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
 import { isLoggedIn } from "axios-jwt";
-import { navigate } from "raviger";
+import { Link, navigate } from "raviger";
 import React from "react";
 import AuthPage from "../components/AuthPage";
 import Button from "../components/Button";
@@ -119,9 +119,9 @@ const Signup = () => {
           <div className="space-y-2">
             <Button type="fullGray" disabled={!user.username || !user.password1 || !user.password2}>Create Account</Button>
             <div>
-              <a href="/login">
+              <Link href="/login">
                 Already have an account? <b>Log In</b>
-              </a>
+              </Link>
             </div>
           </div>
         </div>

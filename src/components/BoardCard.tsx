@@ -20,7 +20,7 @@ const BoardCard = ({ title, description, url, id,  update, setUpdate }: BoardCar
   return (
     <div>
       <BoardModal update={update} setUpdate={setUpdate} open={editOpen} setOpen={setEditOpen} mode="edit" id={id} title={title} description={description} />
-      <div className="block px-6 py-4 w-full max-w-sm min-h-[10rem] rounded-lg border shadow-md bg-gray-800 border-gray-700 hover:bg-gray-700 space-y-4 drop-shadow-xl">
+      <div className="flex flex-col px-6 py-4 space-y-3 min-h-[12rem] text-gray-50 bg-gray-800 drop-shadow-lg rounded-xl">
         <div className="flex justify-end">
           <DotMenu open={open } setOpen={setOpen} setEditOpen={setEditOpen} deleteCB={() => {
               setOpen(false);

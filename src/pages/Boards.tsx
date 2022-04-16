@@ -2,8 +2,8 @@ import { AxiosResponse } from "axios";
 import React, { useEffect, useState } from "react";
 import BoardCard from "../components/BoardCard";
 import BoardModal from "../components/BoardModal";
-import Button from "../components/Button";
 import Loader from "../components/ContentLoader";
+import PageDiv from "../components/PageDiv";
 import { BoardType, BoardList } from "../types/boards";
 import { request } from "../utils/api";
 import toast from "../utils/toast";
@@ -11,7 +11,7 @@ import toast from "../utils/toast";
 function Boards() {
   const [boards, setBoards] = useState<BoardList>();
   const [loading, setLoading] = React.useState(true);
-  const[update, setUpdate] = React.useState(false);
+  const [update, setUpdate] = React.useState(false);
 
   useEffect(() => {
     request("/boards/")
@@ -36,42 +36,45 @@ function Boards() {
   const [open, setOpen] = React.useState(false);
 
   return (
-    <div className="space-y-5">
-      <h1>My Boards</h1>
-      <div className="flex items-center">
-        <Button
-          className="ml-auto order-last"
-          type="newBoard"
-          onClick={() => {
-            setOpen(true);
-          }}
-        >
-          Create Board
-        </Button>
-      </div>
+    <PageDiv
+      heading="My Board"
+      buttonName="Create Board"
+      buttonCB={() => {
+        setOpen(true);
+      }}
+    >
       <div className="grid grid-cols-3 grid-flow-row gap-4">
         {loading ? (
-          <Loader />
-          ) : boards && boards.results.length > 0 ? (
-            boards.results.map((board: BoardType) => {
-              return (
+          <>
+            <Loader />
+            <Loader />
+            <Loader />
+          </>
+        ) : boards && boards.results.length > 0 ? (
+          boards.results.map((board: BoardType) => {
+            return (
               <BoardCard
-              id={board.id}
-              title={board.title}
-              description={board.description}
-              url={`/board/${board.id}`}
-              key={board.id}
-              update={update}
-              setUpdate={setUpdate}
+                id={board.id}
+                title={board.title}
+                description={board.description}
+                url={`/board/${board.id}`}
+                key={board.id}
+                update={update}
+                setUpdate={setUpdate}
               />
-              );
-            })
-            ) : (
-              <h4>No Boards Available</h4>
-              )}
+            );
+          })
+        ) : (
+          <h4>No Boards Available</h4>
+        )}
       </div>
-      <BoardModal open={open} setOpen={setOpen} update={update} setUpdate={setUpdate} />
-    </div>
+      <BoardModal
+        open={open}
+        setOpen={setOpen}
+        update={update}
+        setUpdate={setUpdate}
+      />
+    </PageDiv>
   );
 }
 
