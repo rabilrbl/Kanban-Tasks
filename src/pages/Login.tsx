@@ -17,7 +17,10 @@ const Login = () => {
 
   React.useEffect(() => {
     if (isLoggedIn()) {
-      window.location.href = "/";
+      toast.info("You already signed in!", {
+        toastId: "already-signed-in",
+      });
+      navigate("/");
     }
   }, []);
 
