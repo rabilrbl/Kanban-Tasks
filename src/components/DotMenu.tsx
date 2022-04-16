@@ -22,7 +22,7 @@ const DotMenu = (props: Props) => {
               <ThreeDots />
             </Button>
             {open && (
-              <div className="absolute z-50 right-0 bg-gray-800 text-white border rounded shadow-xl text-sm -mt-2">
+              <div className="absolute z-50 right-0 bg-gray-800 w-24 text-white border rounded shadow-xl text-sm -mt-2">
                 <ul className="p-2 space-y-1">
                   <li>
                     <button className="flex items-center hover:font-bold" onClick={() => {
