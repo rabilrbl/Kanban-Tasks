@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import BoardCard from "../components/BoardCard";
 import BoardModal from "../components/BoardModal";
 import Loader from "../components/ContentLoader";
+import GridFlow from "../components/GridFlow";
 import PageDiv from "../components/PageDiv";
 import { BoardType, BoardList } from "../types/boards";
 import { request } from "../utils/api";
@@ -43,7 +44,7 @@ function Boards() {
         setOpen(true);
       }}
     >
-      <div className="grid grid-cols-3 grid-flow-row gap-4">
+      <GridFlow>
         {loading ? (
           <>
             <Loader />
@@ -67,7 +68,7 @@ function Boards() {
         ) : (
           <h4>No Boards Available</h4>
         )}
-      </div>
+      </GridFlow>
       <BoardModal
         open={open}
         setOpen={setOpen}
