@@ -7,13 +7,13 @@ interface ModalProps {
 }
 
 export default function Modal(props: ModalProps) {
-  let open = props.isOpen ? "visible" : "invisible";
+  let open = props.isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none";
   return (
     <div
       id="authentication-modal"
       tabIndex={-1}
       aria-hidden="true"
-      className={"overflow-y-auto overflow-x-auto absolute top-0 z-50 flex items-center justify-center drop-shadow-xl bg-black bg-opacity-25 left-0  w-full md:inset-0 h-screen md:h-full transition ease-in-out delay-150 duration-100 " + open}
+      className={"overflow-y-auto overflow-x-auto absolute top-0 z-50 flex items-center justify-center drop-shadow-xl bg-black bg-opacity-25 left-0  w-full md:inset-0 h-screen md:h-full transition-all ease-in-out delay-75 duration-200 " + open}
     >
       <div className="relative p-4 w-full max-w-md h-full md:h-auto">
         {/* <!-- Modal content --> */}
