@@ -10,6 +10,7 @@ import toast from "../utils/toast";
 
 const Signup = () => {
   const [user, setUser] = React.useState({
+    name: "",
     username: "",
     password1: "",
     password2: "",
@@ -18,7 +19,9 @@ const Signup = () => {
 
   React.useEffect(() => {
     if (isLoggedIn()) {
-      toast.info("You already signed in!");
+      toast.info("You already signed in!", {
+        toastId: "already-signed-in",
+      });
       navigate("/");
     }
   }, []);
@@ -47,6 +50,20 @@ const Signup = () => {
         }}
       >
         <div className="space-y-4">
+          <FullInput
+            label="Name"
+            name="name"
+            type="text"
+            placeholder="Enter your name"
+            value={user.name}
+            onChange={(e) => {
+              setUser({
+                ...user,
+                name: e.target.value,
+              });
+            }}
+            required={true}
+          />
           <FullInput
             label="Username"
             name="username"
