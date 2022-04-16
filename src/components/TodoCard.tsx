@@ -32,7 +32,7 @@ const TodoCard = (props: Props) => {
         status={props.task.status}
         priority={props.task.priority}
       />
-      <div className={"flex flex-col p-4 space-y-3 min-h-[12rem] text-gray-50 bg-gray-800 drop-shadow-lg rounded-xl " + fade}>
+      <div className={"flex flex-col p-4 space-y-3 min-w-fit min-h-[12rem] text-gray-50 bg-gray-800 drop-shadow-lg rounded-xl " + fade}>
           <div className="flex items-center justify-between">
               <SmallBadge text={props.task.priority} />
               <input type="checkbox" checked={props.task.status === "completed"} className="h-6 w-6 rounded-full focus:border-none focus:outline-none focus:ring-gray-800" onChange={(e) => {
@@ -55,7 +55,7 @@ const TodoCard = (props: Props) => {
             )}
           </p>
         </div>
-        <div className="flex items-center justify-between fixed bottom-2 right-4">
+        <div className="flex items-center justify-end z-50 bottom-2 right-4">
           <DotMenu
             open={open}
             setOpen={setOpen}
