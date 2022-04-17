@@ -5,6 +5,7 @@ import { request } from "../utils/api";
 import DotMenu from "./DotMenu";
 import SmallBadge from "./SmallBadge";
 import TaskModal from "./TaskModal";
+import { DraggableProvided } from "@react-forked/dnd";
 
 type Props = {
   id: number;
@@ -15,6 +16,8 @@ type Props = {
   status: status;
   update: boolean;
   setUpdate: (update: boolean) => void;
+  provided: DraggableProvided;
+  
 };
 
 const TaskCard = (props: Props) => {
@@ -22,8 +25,25 @@ const TaskCard = (props: Props) => {
   const [editOpen, setEditOpen] = useState(false);
   return (
     <div>
-      <TaskModal update={props.update} setUpdate={props.setUpdate} mode="edit" boardId={props.boardId} id={props.id} open={editOpen} setOpen={setEditOpen} title={props.title} description={props.description} status={props.status} priority={props.priority} />
-      <div className="flex flex-col p-4 space-y-3 min-h-[12rem] text-gray-50 bg-gray-800 drop-shadow-lg rounded-xl">
+      <TaskModal
+        update={props.update}
+        setUpdate={props.setUpdate}
+        mode="edit"
+        boardId={props.boardId}
+        id={props.id}
+        open={editOpen}
+        setOpen={setEditOpen}
+        title={props.title}
+        description={props.description}
+        status={props.status}
+        priority={props.priority}
+      />
+      <div
+        ref={props.provided.innerRef}
+        {...props.provided.draggableProps}
+        {...props.provided.dragHandleProps}
+        className="flex flex-col p-4 space-y-3 min-h-[12rem] text-gray-50 bg-gray-800 drop-shadow-lg rounded-xl"
+      >
         <div className="flex items-center justify-between">
           <SmallBadge text={props.priority} />
           <DotMenu
@@ -32,7 +52,9 @@ const TaskCard = (props: Props) => {
             setEditOpen={setEditOpen}
             deleteCB={() => {
               setOpen(false);
-              const r = request.delete(`/boards/${props.boardId}/tasks/${props.id}`);
+              const r = request.delete(
+                `/boards/${props.boardId}/tasks/${props.id}`
+              );
               toast
                 .promise(r, {
                   pending: "Archiving task...",
@@ -47,7 +69,15 @@ const TaskCard = (props: Props) => {
         </div>
         <h3>{props.title}</h3>
         <div className="flex flex-col justify-start">
-          <p className="text-sm">{props.description ? props.description : <span className="italic bold opacity-50">No description provided.</span>}</p>
+          <p className="text-sm">
+            {props.description ? (
+              props.description
+            ) : (
+              <span className="italic bold opacity-50">
+                No description provided.
+              </span>
+            )}
+          </p>
         </div>
       </div>
     </div>

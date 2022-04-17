@@ -6,6 +6,7 @@ type Props = {
   buttonName: string;
   buttonCB: () => void;
   children: React.ReactNode;
+  startExtras?: React.ReactNode;
   extras?: React.ReactNode;
 };
 
@@ -14,6 +15,7 @@ const PageDiv = (props: Props) => {
     <div className="space-y-5">
       <h1>{props.heading}</h1>
       <div className="flex items-center">
+        {props.startExtras}
         <div className="ml-auto order-last flex items-center">
           <Button className="" type="newBoard" onClick={props.buttonCB}>
             {props.buttonName}

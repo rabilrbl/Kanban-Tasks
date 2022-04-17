@@ -6,9 +6,11 @@ import TaskCard from "../components/TaskCard";
 import TaskCardParent from "../components/TaskCardParent";
 import TaskModal from "../components/TaskModal";
 import { BoardType } from "../types/boards";
-import { StatusTask } from "../types/tasks";
+import { StatusTask, Task } from "../types/tasks";
 import { request } from "../utils/api";
 import toast from "../utils/toast";
+import { DragDropContext, Draggable, Droppable } from "@react-forked/dnd";
+import AlertInfo from "../components/AlertInfo";
 
 const Board = ({ id }: { id: number }) => {
   const [board, setBoard] = useState<BoardType>();
@@ -17,7 +19,7 @@ const Board = ({ id }: { id: number }) => {
   const [progress, setProgress] = useState<StatusTask>();
   const [done, setDone] = useState<StatusTask>();
   const [open, setOpen] = useState(false);
-  const [update, setUpdate]  = useState(false);
+  const [update, setUpdate] = useState(false);
   useEffect(() => {
     request
       .get(`/boards/${id}/`)
@@ -120,40 +122,189 @@ const Board = ({ id }: { id: number }) => {
       });
   }, [id, update]);
 
+  const renderDestination = (destination: string, task: Task) => {
+    switch (destination) {
+      case "todo":
+        todo &&
+          setTodo({
+            ...todo,
+            tasks: [...todo.tasks, task],
+          });
+        request
+          .patch(`/tasks/${task.id}/`, {
+            status: "pending",
+          })
+          .catch((e) => {
+            toast.error(`Failed to update task: ${e.message}`, {
+              toastId: "task-update-error",
+            });
+          });
+        break;
+      case "progress":
+        progress &&
+          setProgress({
+            ...progress,
+            tasks: [...progress.tasks, task],
+          });
+        request
+          .patch(`/tasks/${task.id}/`, {
+            status: "in_progress",
+          })
+          .catch((e) => {
+            toast.error(`Failed to update task: ${e.message}`, {
+              toastId: "task-update-error",
+            });
+          });
+        break;
+      case "done":
+        done &&
+          setDone({
+            ...done,
+            tasks: [...done.tasks, task],
+          });
+        request
+          .patch(`/tasks/${task.id}/`, {
+            status: "completed",
+          })
+          .catch((e) => {
+            toast.error(`Failed to update task: ${e.message}`, {
+              toastId: "task-update-error",
+            });
+          });
+        break;
+      default:
+        break;
+    }
+  };
+
+  const onDrapEnd = (result: any) => {
+    const status = ["todo", "progress", "done"];
+    const { source, destination } = result;
+    if (!destination) {
+      return;
+    }
+    if (source.droppableId !== destination.droppableId) {
+      const statusSource = status[source.droppableId];
+      const statusDestination = status[destination.droppableId];
+      const taskId = Number(result.draggableId);
+      if (statusSource === "todo" && todo) {
+        const task = todo.tasks.find((task) => task.id === taskId);
+        if (!task) {
+          console.log("task not found");
+          return;
+        }
+        todo &&
+          setTodo({
+            ...todo,
+            tasks: todo.tasks.filter((task) => task.id !== taskId),
+          });
+        renderDestination(statusDestination, task);
+      } else if (statusSource === "progress" && progress) {
+        const task = progress.tasks.find((task) => task.id === taskId);
+        if (!task) {
+          console.log("task not found");
+          return;
+        }
+        progress &&
+          setProgress({
+            ...progress,
+            tasks: progress.tasks.filter((task) => task.id !== taskId),
+          });
+        renderDestination(statusDestination, task);
+      } else if (statusSource === "done" && done) {
+        const task = done.tasks.find((task) => task.id === taskId);
+        if (!task) {
+          console.log("task not found");
+          return;
+        }
+        done &&
+          setDone({
+            ...done,
+            tasks: done.tasks.filter((task) => task.id !== taskId),
+          });
+        renderDestination(statusDestination, task);
+      }
+    }
+  };
+
   return (
-      <PageDiv heading={board?.title!} buttonName="New Task" buttonCB={() => {
-            setOpen(true);
-          }} >
+    <PageDiv
+      heading={board?.title!}
+      buttonName="New Task"
+      buttonCB={() => {
+        setOpen(true);
+      }}
+
+      startExtras={
+        <AlertInfo title="Tip: " message="Drag your tasks to the desired destination" />
+      }
+    >
       <div className="grid grid-cols-3 gap-4">
-        {[todo, progress, done].map((d, i) => {
-          return loading ? (
-            <Loader key={i} />
-          ) : (
-            d && (
-              <TaskCardParent key={i} heading={d.heading} count={d.count}>
-                {d.tasks.length > 0 ?
-                  d.tasks.map((t, i) => {
-                    return (
-                      <>{t.id && <TaskCard
-                        key={i}
-                        boardId={id}
-                        id={t.id}
-                        title={t.title}
-                        description={t.description!}
-                        priority={t.priority}
-                        update={update}
-                        status={t.status}
-                        setUpdate={setUpdate}
-                      />}</>
-                    );
-                  }): <span key={i} className="bold italic opacity-50 text-lg">No tasks found</span>}
-              </TaskCardParent>
-            )
-          );
-        })}
+        <DragDropContext onDragEnd={onDrapEnd}>
+          {[todo, progress, done].map((d, i) => {
+            return loading ? (
+              <Loader key={i} />
+            ) : (
+              d && (
+                <Droppable key={i} droppableId={i.toString()}>
+                  {(provided) => (
+                    <TaskCardParent
+                      provided={provided}
+                      heading={d.heading}
+                      count={d.count}
+                    >
+                      {d.tasks.length > 0 ? (
+                        d.tasks.map((t, i) => {
+                          return (
+                            <React.Fragment key={i}>
+                              {
+                                <Draggable
+                                  key={t.id!.toString()}
+                                  draggableId={t.id!.toString()}
+                                  index={i}
+                                >
+                                  {(provided) => (
+                                    <TaskCard
+                                      boardId={id}
+                                      id={t.id!}
+                                      title={t.title}
+                                      description={t.description!}
+                                      priority={t.priority}
+                                      update={update}
+                                      status={t.status}
+                                      setUpdate={setUpdate}
+                                      provided={provided}
+                                    />
+                                  )}
+                                </Draggable>
+                              }
+                            </React.Fragment>
+                          );
+                        })
+                      ) : (
+                        <span
+                          key={i}
+                          className="bold italic opacity-50 text-lg"
+                        >
+                          No tasks found
+                        </span>
+                      )}
+                    </TaskCardParent>
+                  )}
+                </Droppable>
+              )
+            );
+          })}
+        </DragDropContext>
       </div>
-      <TaskModal update={update} setUpdate={setUpdate} boardId={id} open={open} setOpen={setOpen} />
-      </PageDiv>
+      <TaskModal
+        update={update}
+        setUpdate={setUpdate}
+        boardId={id}
+        open={open}
+        setOpen={setOpen}
+      />
+    </PageDiv>
   );
 };
 
