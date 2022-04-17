@@ -128,6 +128,7 @@ const Board = ({ id }: { id: number }) => {
         todo &&
           setTodo({
             ...todo,
+            count: todo.count + 1,
             tasks: [...todo.tasks, task],
           });
         request
@@ -144,6 +145,7 @@ const Board = ({ id }: { id: number }) => {
         progress &&
           setProgress({
             ...progress,
+            count: progress.count + 1,
             tasks: [...progress.tasks, task],
           });
         request
@@ -160,6 +162,7 @@ const Board = ({ id }: { id: number }) => {
         done &&
           setDone({
             ...done,
+            count: done.count + 1,
             tasks: [...done.tasks, task],
           });
         request
@@ -177,7 +180,7 @@ const Board = ({ id }: { id: number }) => {
     }
   };
 
-  const onDrapEnd = (result: any) => {
+  const onDropEnd = (result: any) => {
     const status = ["todo", "progress", "done"];
     const { source, destination } = result;
     if (!destination) {
@@ -196,6 +199,7 @@ const Board = ({ id }: { id: number }) => {
         todo &&
           setTodo({
             ...todo,
+            count: todo.count - 1,
             tasks: todo.tasks.filter((task) => task.id !== taskId),
           });
         renderDestination(statusDestination, task);
@@ -208,6 +212,7 @@ const Board = ({ id }: { id: number }) => {
         progress &&
           setProgress({
             ...progress,
+            count: progress.count - 1,
             tasks: progress.tasks.filter((task) => task.id !== taskId),
           });
         renderDestination(statusDestination, task);
@@ -220,6 +225,7 @@ const Board = ({ id }: { id: number }) => {
         done &&
           setDone({
             ...done,
+            count: done.count - 1,
             tasks: done.tasks.filter((task) => task.id !== taskId),
           });
         renderDestination(statusDestination, task);
@@ -240,7 +246,7 @@ const Board = ({ id }: { id: number }) => {
       }
     >
       <div className="grid grid-cols-3 gap-4">
-        <DragDropContext onDragEnd={onDrapEnd}>
+        <DragDropContext onDragEnd={onDropEnd}>
           {[todo, progress, done].map((d, i) => {
             return loading ? (
               <Loader key={i} />

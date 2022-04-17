@@ -13,7 +13,7 @@ export default function Modal(props: ModalProps) {
       id="authentication-modal"
       tabIndex={-1}
       aria-hidden="true"
-      className={"overflow-y-auto overflow-x-auto absolute top-0 z-50 flex items-center justify-center drop-shadow-xl bg-black bg-opacity-25 left-0  w-full md:inset-0 h-screen md:h-full transition-all ease-in-out delay-75 duration-200 " + open}
+      className={"overflow-y-auto overflow-x-auto fixed top-0 z-50 flex items-center justify-center drop-shadow-xl bg-black bg-opacity-25 left-0  w-full md:inset-0 h-screen md:h-full transition-all ease-in-out delay-100 duration-200 " + open}
     >
       <div className="relative p-4 w-full max-w-md h-full md:h-auto">
         {/* <!-- Modal content --> */}

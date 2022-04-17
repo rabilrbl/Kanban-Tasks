@@ -53,6 +53,7 @@ const TaskModal = (props: Props) => {
         request.get("/list/boards").then((response: AxiosResponse) => {
           if(response.status === 200) {
             setOptions(response.data.boards)
+            response.data.boards.length > 0 && setTask(t =>  ({...t, board: response.data.boards[0].id}))
           }
         }).catch((err) => {
           toast.error(`Failed to fetch boards list from server. You may face errors when creating form! Reason: ${err}`)
@@ -127,7 +128,7 @@ const TaskModal = (props: Props) => {
         <FullInput
             name="status"
             type="select"
-            label="Status"
+            label="Stage"
             value={task.status}
             onChange={(e) =>
               setTask({ ...task, status: e.target.value as status })

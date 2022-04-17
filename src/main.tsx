@@ -76,7 +76,7 @@ function App() {
               pauseOnHover
               theme="dark"
               style={{marginTop: "3rem"}}
-              limit={4}
+              limit={3}
             />
             {route || <PageNotFound />}
           </Container>
