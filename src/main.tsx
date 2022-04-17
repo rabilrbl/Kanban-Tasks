@@ -14,11 +14,9 @@ import HorizNavBar from "./components/HorizNavBar";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Boards from "./pages/Boards";
+import Board from "./pages/Board";
 import Todo from "./pages/Todo";
 import SecurePage from "./components/SecurePage";
-import Loader from "./components/ContentLoader";
-
-const Board = React.lazy(() => import("./pages/Board"));
 
 const routes = {
   "/": () => (
@@ -35,11 +33,9 @@ const routes = {
     </SecurePage>
   ),
   "/board/:id": ({ id }: { id: string }) => (
-    <React.Suspense fallback={<Loader />}>
       <SecurePage>
         <Board id={Number(id)} />
       </SecurePage>
-    </React.Suspense>
   ),
   "/todo": () => (
     <SecurePage>
