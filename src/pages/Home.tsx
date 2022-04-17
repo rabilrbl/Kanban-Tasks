@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { greetingMessage } from "../utils/greet";
 import moment from "moment";
 import toast from "../utils/toast";
-import { isLoggedIn } from "axios-jwt";
 import { navigate } from "raviger";
 import UnderlineTabs from "../components/UnderlineTabs";
 import { Task, TaskItem } from "../types/tasks";
@@ -22,7 +21,6 @@ const Home = () => {
   }>();
 
   useEffect(() => {
-    if (isLoggedIn()) {
       request
         .get("/count/")
         .then((response: AxiosResponse) => {
@@ -53,12 +51,6 @@ const Home = () => {
             toastId: "tasks-fetch-error",
           });
         });
-    } else {
-      toast.warning("You are not logged in", {
-        toastId: "not-logged-in",
-      });
-      navigate("/login");
-    }
   }, []);
 
   const [taskItem, setTaskItem] = useState<TaskItem>("To Do");

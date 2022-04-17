@@ -16,15 +16,32 @@ import "react-toastify/dist/ReactToastify.css";
 import Boards from "./pages/Boards";
 import Board from "./pages/Board";
 import Todo from "./pages/Todo";
+import SecurePage from "./components/SecurePage";
 
 const routes = {
-  "/": () => <Home />,
+  "/": () => (
+    <SecurePage>
+      <Home />
+    </SecurePage>
+  ),
   "/login": () => <Login />,
   "/logout": () => <Logout />,
   "/signup": () => <Signup />,
-  "/boards": () => <Boards />,
-  "/board/:id": ({id}: {id:string}) => <Board id={Number(id)} />,
-  "/todo": () => <Todo />,
+  "/boards": () => (
+    <SecurePage>
+      <Boards />
+    </SecurePage>
+  ),
+  "/board/:id": ({ id }: { id: string }) => (
+    <SecurePage>
+      <Board id={Number(id)} />
+    </SecurePage>
+  ),
+  "/todo": () => (
+    <SecurePage>
+      <Todo />
+    </SecurePage>
+  ),
 };
 
 const navLinks = [
@@ -75,7 +92,7 @@ function App() {
               draggable
               pauseOnHover
               theme="dark"
-              style={{marginTop: "3rem"}}
+              style={{ marginTop: "3rem" }}
               limit={3}
             />
             {route || <PageNotFound />}
