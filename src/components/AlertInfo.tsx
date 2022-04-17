@@ -29,6 +29,7 @@ const AlertInfo = (props: Props) => {
       </div>
       <button
         onClick={() => setOpen(false)}
+        aria-label="Close"
         className="ml-2 text-sm text-gray-400 focus:outline-none"
       >
         <svg
