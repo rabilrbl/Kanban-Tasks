@@ -100,6 +100,7 @@ const Todo = (props: Props) => {
         <>
           <button
             type="button"
+            aria-label="Grid View"
             className={
               "py-2 px-4 text-sm font-medium text-gray-100 rounded-l-lg border border-gray-200 hover:bg-gray-700 hover:bold " +
               (view === "grid" ? "bg-gray-800" : "bg-gray-600")
@@ -110,6 +111,7 @@ const Todo = (props: Props) => {
           </button>
           <button
             type="button"
+            aria-label="List View"
             className={
               "py-2 px-4 text-sm font-medium text-gray-100 rounded-r-md border border-gray-200 hover:bg-gray-700 hover:bold focus:z-10 " +
               (view === "list" ? "bg-gray-800" : "bg-gray-600")
