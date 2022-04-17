@@ -17,7 +17,6 @@ type Props = {
   update: boolean;
   setUpdate: (update: boolean) => void;
   provided: DraggableProvided;
-  
 };
 
 const TaskCard = (props: Props) => {
@@ -68,7 +67,10 @@ const TaskCard = (props: Props) => {
           />
         </div>
         <h3>{props.title}</h3>
-        <div className="flex flex-col justify-start" onClick={() => setEditOpen(true)}>
+        <div
+          className="flex flex-col justify-start"
+          onClick={() => setEditOpen(true)}
+        >
           <p className="text-sm">
             {props.description ? (
               props.description

@@ -11,7 +11,7 @@ type Props = {
   disabled?: boolean;
 };
 
-const Button = (props: Props) => { 
+const Button = (props: Props) => {
   const { type, children, className, disabled, onClick } = props;
   switch (type) {
     case "fullGray":

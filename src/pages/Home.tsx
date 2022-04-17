@@ -21,36 +21,35 @@ const Home = () => {
   }>();
 
   useEffect(() => {
-      request
-        .get("/count/")
-        .then((response: AxiosResponse) => {
-          if (response.status === 200) {
-            setTaskInfo({
-              user: response.data.user,
-              tasks: [
-                {
-                  type: "Incomplete Tasks",
-                  count:
-                    Number(response.data.todo) +
-                    Number(response.data.onprogress),
-                },
-                {
-                  type: "Completed Tasks",
-                  count: response.data.done,
-                },
-                {
-                  type: "Total Tasks",
-                  count: response.data.total,
-                },
-              ],
-            });
-          }
-        })
-        .catch((error) => {
-          toast.error(`Failed to fetch tasks: ${error.message}`, {
-            toastId: "tasks-fetch-error",
+    request
+      .get("/count/")
+      .then((response: AxiosResponse) => {
+        if (response.status === 200) {
+          setTaskInfo({
+            user: response.data.user,
+            tasks: [
+              {
+                type: "Incomplete Tasks",
+                count:
+                  Number(response.data.todo) + Number(response.data.onprogress),
+              },
+              {
+                type: "Completed Tasks",
+                count: response.data.done,
+              },
+              {
+                type: "Total Tasks",
+                count: response.data.total,
+              },
+            ],
           });
+        }
+      })
+      .catch((error) => {
+        toast.error(`Failed to fetch tasks: ${error.message}`, {
+          toastId: "tasks-fetch-error",
         });
+      });
   }, []);
 
   const [taskItem, setTaskItem] = useState<TaskItem>("To Do");
@@ -144,8 +143,8 @@ const Home = () => {
         <div className="grid grid-cols-1 gap-5">
           {taskLoading ? (
             <Loader />
-          ) : (
-            tasks && tasks.length > 0 ? tasks?.map((task) => {
+          ) : tasks && tasks.length > 0 ? (
+            tasks?.map((task) => {
               return (
                 <div
                   key={task.id}
@@ -154,11 +153,14 @@ const Home = () => {
                 >
                   <h5 className="mr-5">{task.title}</h5>
                   <div className="flex items-center space-x-5">
-                    <SmallBadge text={task.priority} /> <span className="text-sm">on {task.board_title}</span>
+                    <SmallBadge text={task.priority} />{" "}
+                    <span className="text-sm">on {task.board_title}</span>
                   </div>
                 </div>
               );
-            }) : <h5>No tasks found</h5>
+            })
+          ) : (
+            <h5>No tasks found</h5>
           )}
         </div>
       </div>

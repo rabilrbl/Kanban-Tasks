@@ -35,18 +35,24 @@ const Signup = () => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          toast.promise(request
-            .post("/auth/registration/", user)
-            .then((response: AxiosResponse) => {
-              if(response.status === 201){
-                toast.success("Successfully signed up!. Please Login with same credentials.");
-                navigate("/login");
-              }
-            }).catch((e) => {
-              toast.error(`Error signing up. ${e.message}`);
-            }),{
-              "pending": "Signing up..."
-            })
+          toast.promise(
+            request
+              .post("/auth/registration/", user)
+              .then((response: AxiosResponse) => {
+                if (response.status === 201) {
+                  toast.success(
+                    "Successfully signed up!. Please Login with same credentials."
+                  );
+                  navigate("/login");
+                }
+              })
+              .catch((e) => {
+                toast.error(`Error signing up. ${e.message}`);
+              }),
+            {
+              pending: "Signing up...",
+            }
+          );
         }}
       >
         <div className="space-y-4">
@@ -117,7 +123,12 @@ const Signup = () => {
             }}
           />
           <div className="space-y-2">
-            <Button type="fullGray" disabled={!user.username || !user.password1 || !user.password2}>Create Account</Button>
+            <Button
+              type="fullGray"
+              disabled={!user.username || !user.password1 || !user.password2}
+            >
+              Create Account
+            </Button>
             <div>
               <Link href="/login">
                 Already have an account? <b>Log In</b>

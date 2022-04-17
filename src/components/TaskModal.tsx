@@ -17,8 +17,8 @@ type Props = {
   priority?: priority;
   open: boolean;
   setOpen: (open: boolean) => void;
-    update: boolean;
-    setUpdate: (update: boolean) => void;
+  update: boolean;
+  setUpdate: (update: boolean) => void;
   todoOnly?: boolean;
 };
 
@@ -33,9 +33,9 @@ const TaskModal = (props: Props) => {
     description,
     status,
     priority,
-      update,
-      setUpdate,
-      todoOnly,
+    update,
+    setUpdate,
+    todoOnly,
   } = props;
 
   const [task, setTask] = useState<Task>({
@@ -46,20 +46,26 @@ const TaskModal = (props: Props) => {
     board: boardId,
   });
 
-  const [options, setOptions] = useState<TaskOptions>()
+  const [options, setOptions] = useState<TaskOptions>();
 
   useEffect(() => {
-    if(todoOnly) {
-        request.get("/list/boards").then((response: AxiosResponse) => {
-          if(response.status === 200) {
-            setOptions(response.data.boards)
-            response.data.boards.length > 0 && setTask(t =>  ({...t, board: response.data.boards[0].id}))
+    if (todoOnly) {
+      request
+        .get("/list/boards")
+        .then((response: AxiosResponse) => {
+          if (response.status === 200) {
+            setOptions(response.data.boards);
+            response.data.boards.length > 0 &&
+              setTask((t) => ({ ...t, board: response.data.boards[0].id }));
           }
-        }).catch((err) => {
-          toast.error(`Failed to fetch boards list from server. You may face errors when creating form! Reason: ${err}`)
         })
+        .catch((err) => {
+          toast.error(
+            `Failed to fetch boards list from server. You may face errors when creating form! Reason: ${err}`
+          );
+        });
     }
-  } ,[todoOnly])
+  }, [todoOnly]);
 
   return (
     <Modal isOpen={open} onClose={() => setOpen(false)}>
@@ -69,15 +75,16 @@ const TaskModal = (props: Props) => {
           setOpen(false);
           e.preventDefault();
           if (mode && id) {
-            const r = request.put(`/boards/${boardId}/tasks/${id}/`, task).then(() => {
-              setUpdate(!update)
+            const r = request
+              .put(`/boards/${boardId}/tasks/${id}/`, task)
+              .then(() => {
+                setUpdate(!update);
+              });
+            toast.promise(r, {
+              pending: "Updating task...",
+              success: "Task updated successfully",
+              error: "Failed to task board",
             });
-            toast
-              .promise(r, {
-                pending: "Updating task...",
-                success: "Task updated successfully",
-                error: "Failed to task board",
-              })
           } else if (boardId) {
             const r = request
               .post(`/boards/${boardId}/tasks/`, task)
@@ -86,7 +93,7 @@ const TaskModal = (props: Props) => {
                   toast.success("Task created successfully");
                   //   navigate(`/boards/${response.data.id}`);
                   setOpen(false);
-                    setUpdate(!update);
+                  setUpdate(!update);
                 }
               })
               .catch((e) => {
@@ -107,9 +114,7 @@ const TaskModal = (props: Props) => {
             placeholder="Task Title"
             value={task.title}
             required={true}
-            onChange={(e) =>
-              setTask({ ...task, title: e.target.value })
-            }
+            onChange={(e) => setTask({ ...task, title: e.target.value })}
           />
         </div>
         <div>
@@ -118,14 +123,12 @@ const TaskModal = (props: Props) => {
             type="textarea"
             label="Description"
             value={task.description}
-            onChange={(e) =>
-              setTask({ ...task, description: e.target.value })
-            }
+            onChange={(e) => setTask({ ...task, description: e.target.value })}
             placeholder="Type pretty things to describe your task"
           />
         </div>
         <div>
-        <FullInput
+          <FullInput
             name="status"
             type="select"
             label="Stage"
@@ -133,11 +136,15 @@ const TaskModal = (props: Props) => {
             onChange={(e) =>
               setTask({ ...task, status: e.target.value as status })
             }
-            options={[{ label: "To Do", value: "pending" }, { label: "On Progress", value: "in_progress" }, { label: "Done", value: "completed" }]}
+            options={[
+              { label: "To Do", value: "pending" },
+              { label: "On Progress", value: "in_progress" },
+              { label: "Done", value: "completed" },
+            ]}
           />
         </div>
         <div>
-        <FullInput
+          <FullInput
             name="priority"
             type="select"
             label="Priority"
@@ -145,24 +152,30 @@ const TaskModal = (props: Props) => {
             onChange={(e) =>
               setTask({ ...task, priority: e.target.value as priority })
             }
-            options={[{ label: "Low", value: "low" }, { label: "Medium", value: "medium" }, { label: "High", value: "high" }]}
+            options={[
+              { label: "Low", value: "low" },
+              { label: "Medium", value: "medium" },
+              { label: "High", value: "high" },
+            ]}
           />
         </div>
-        {todoOnly && <div>
-        <FullInput
-            name="board"
-            type="select"
-            label="Board"
-            value={task.board?.toString()}
-            required={true}
-            onChange={(e) =>
-              setTask({ ...task, board: Number(e.target.value) })
-            }
-            options={options?.map((o) => {
-              return {label: o.title, value: o.id.toString()}
-            })}
-          />
-        </div>}
+        {todoOnly && (
+          <div>
+            <FullInput
+              name="board"
+              type="select"
+              label="Board"
+              value={task.board?.toString()}
+              required={true}
+              onChange={(e) =>
+                setTask({ ...task, board: Number(e.target.value) })
+              }
+              options={options?.map((o) => {
+                return { label: o.title, value: o.id.toString() };
+              })}
+            />
+          </div>
+        )}
         <button
           type="submit"
           className="w-full text-white bg-zinc-800 hover:bg-zinc-700 focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"

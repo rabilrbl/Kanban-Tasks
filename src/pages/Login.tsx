@@ -7,7 +7,7 @@ import FullInput from "../components/FullInput";
 import Spinner from "../components/icons/Spinner";
 import { request } from "../utils/api";
 import { Link, navigate } from "raviger";
-import toast from "../utils/toast"
+import toast from "../utils/toast";
 
 const Login = () => {
   const [user, setUser] = React.useState({
@@ -41,17 +41,19 @@ const Login = () => {
             .then((response: AxiosResponse) => {
               if (response.status === 400 || response.status === 401) {
                 throw new Error("Invalid credentials");
-              } else if (response.status === 200){
-              setAuthTokens({
-                accessToken: response.data.access,
-                refreshToken: response.data.refresh,
-              });}
+              } else if (response.status === 200) {
+                setAuthTokens({
+                  accessToken: response.data.access,
+                  refreshToken: response.data.refresh,
+                });
+              }
             })
             .then(() => {
               setLoading(false);
               toast.success("Logged in");
-              navigate("/")
-            }).catch((e) => {
+              navigate("/");
+            })
+            .catch((e) => {
               setLoading(false);
               toast.error(`Error logging in. ${e.message}`);
             });
@@ -77,7 +79,7 @@ const Login = () => {
                 Password
               </label>
               <a
-                href="/forgot-password"
+                href="#/forgot-password"
                 className="text-sm text-gray-600 ml-auto"
               >
                 Forgot password?
@@ -94,9 +96,15 @@ const Login = () => {
             />
           </div>
           <div className="space-y-2">
-            <Button type="fullGray" disabled={loading || !user.username || !user.password}>
+            <Button
+              type="fullGray"
+              disabled={loading || !user.username || !user.password}
+            >
               {loading ? (
-                <><Spinner />&nbsp;Loading...</>
+                <>
+                  <Spinner />
+                  &nbsp;Loading...
+                </>
               ) : (
                 "Log in"
               )}

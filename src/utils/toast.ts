@@ -1,3 +1,3 @@
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 
-export default toast
+export default toast;

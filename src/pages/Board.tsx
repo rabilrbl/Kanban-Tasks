@@ -240,9 +240,11 @@ const Board = ({ id }: { id: number }) => {
       buttonCB={() => {
         setOpen(true);
       }}
-
       startExtras={
-        <AlertInfo title="Tip: " message="Drag your tasks to the desired destination" />
+        <AlertInfo
+          title="Tip: "
+          message="Drag your tasks to the desired destination"
+        />
       }
     >
       <div className="grid grid-cols-3 gap-4">

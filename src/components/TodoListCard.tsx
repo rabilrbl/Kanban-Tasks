@@ -39,13 +39,15 @@ const TodoListCard = (props: GridProps) => {
         </div>
         <div className="">
           <h4 className="">{props.task.title}</h4>
-          <p className="text-sm">{props.task.description ? (
+          <p className="text-sm">
+            {props.task.description ? (
               props.task.description
             ) : (
               <span className="italic bold opacity-50">
                 No description provided.
               </span>
-            )}</p>
+            )}
+          </p>
         </div>
         <div className="ml-auto order-1 flex items-center">
           <SmallBadge text={props.task.priority} />

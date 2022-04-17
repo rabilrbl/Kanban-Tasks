@@ -9,7 +9,10 @@ import TodoCheckbox from "./TodoCheckbox";
 const TodoCard = (props: GridProps) => {
   const [open, setOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
-  const fade = props.task.status === "completed" ? "opacity-60 line-through decoration-2" : "";
+  const fade =
+    props.task.status === "completed"
+      ? "opacity-60 line-through decoration-2"
+      : "";
   return (
     <div>
       <TaskModal
@@ -25,11 +28,16 @@ const TodoCard = (props: GridProps) => {
         status={props.task.status}
         priority={props.task.priority}
       />
-      <div className={"flex flex-col p-4 space-y-3 min-w-fit min-h-[12rem] text-gray-50 bg-gray-800 drop-shadow-lg rounded-xl " + fade}>
-          <div className="flex items-center justify-between">
-              <SmallBadge text={props.task.priority} />
-              <TodoCheckbox task={props.task} onDone={props.onDone} />
-          </div>
+      <div
+        className={
+          "flex flex-col p-4 space-y-3 min-w-fit min-h-[12rem] text-gray-50 bg-gray-800 drop-shadow-lg rounded-xl " +
+          fade
+        }
+      >
+        <div className="flex items-center justify-between">
+          <SmallBadge text={props.task.priority} />
+          <TodoCheckbox task={props.task} onDone={props.onDone} />
+        </div>
         <h3>{props.task.title}</h3>
         <div className="flex flex-col justify-start">
           <p className="text-sm">
@@ -53,7 +61,7 @@ const TodoCard = (props: GridProps) => {
                 task: props.task,
                 setUpdate: props.setUpdate,
                 update: props.update,
-              })
+              });
             }}
           />
         </div>

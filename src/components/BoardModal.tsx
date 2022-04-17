@@ -38,20 +38,20 @@ const BoardModal = ({
           e.preventDefault();
           if (mode) {
             const r = request.put(`/boards/${id}/`, newBoard).then(() => {
-                setUpdate(!update)
+              setUpdate(!update);
             });
             toast.promise(r, {
               pending: "Updating board...",
               success: "Board updated successfully",
               error: "Failed to update board",
-            })
+            });
           } else {
             const r = request
               .post("/boards/", newBoard)
               .then((response) => {
                 if (response.status === 201) {
                   toast.success("Board created successfully");
-                //   navigate(`/boards/${response.data.id}`);
+                  //   navigate(`/boards/${response.data.id}`);
                   setUpdate(!update);
                 }
               })
@@ -64,32 +64,30 @@ const BoardModal = ({
           }
         }}
       >
-        <h3>
-          {mode ? "Edit Board" : "Create New Board"}
-        </h3>
+        <h3>{mode ? "Edit Board" : "Create New Board"}</h3>
         <div>
-        <FullInput
-              name="title"
-              type="text"
-              label="Title"
-              placeholder="Storming Board"
-              value={newBoard.title}
-              onChange={(e) =>
-                setNewBoard({ ...newBoard, title: e.target.value })
-              }
-            />
+          <FullInput
+            name="title"
+            type="text"
+            label="Title"
+            placeholder="Storming Board"
+            value={newBoard.title}
+            onChange={(e) =>
+              setNewBoard({ ...newBoard, title: e.target.value })
+            }
+          />
         </div>
         <div>
-        <FullInput
-              name="description"
-              type="textarea"
-              label="Description"
-              value={newBoard.description}
+          <FullInput
+            name="description"
+            type="textarea"
+            label="Description"
+            value={newBoard.description}
             onChange={(e) =>
               setNewBoard({ ...newBoard, description: e.target.value })
             }
             placeholder="Type pretty things to describe your board"
-            />
+          />
         </div>
         <button
           type="submit"

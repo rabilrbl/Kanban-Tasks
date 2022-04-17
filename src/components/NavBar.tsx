@@ -8,15 +8,14 @@ type NavLinks = {
 }[];
 
 const NavBar = ({ navLinks }: { navLinks: NavLinks }) => {
-
   return (
     <div className="min-h-screen bg-gray-900">
       {/* <!-- component --> */}
       <div className="flex h-screen w-64 flex-col justify-between bg-gray-900 text-zinc-300">
         <div className="p-4">
-        <div className="mb-5">
-          <h3>Kanban Tasks</h3>
-        </div>
+          <div className="mb-5">
+            <h3>Kanban Tasks</h3>
+          </div>
           {/* <!-- items --> */}
           {navLinks.map((nav, index) => {
             return (

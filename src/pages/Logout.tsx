@@ -1,7 +1,7 @@
 import React from "react";
 import { clearAuthTokens } from "axios-jwt";
 import { navigate } from "raviger";
-import toast from "../utils/toast"
+import toast from "../utils/toast";
 
 const Logout = () => {
   React.useEffect(() => {

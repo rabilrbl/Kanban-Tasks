@@ -9,13 +9,13 @@ interface YesNoProps {
 }
 
 const YesNoModal = (props: YesNoProps) => {
-  const { yes, no, message, yesCB, setOpen} = props;
+  const { yes, no, message, yesCB, setOpen } = props;
   return (
     <div>
       <div
         id="popup-modal"
         tabIndex={-1}
-        className= "overflow-y-auto overflow-x-hidden"
+        className="overflow-y-auto overflow-x-hidden"
       >
         <div className="relative p-4 w-full max-w-md h-full md:h-auto">
           {/* <!-- Modal content --> */}
