@@ -15,7 +15,11 @@ const DotMenu = (props: Props) => {
   const { open, setOpen, setEditOpen, deleteCB } = props;
   return (
     <div className="relative">
-      <Button aria-label="Edit Options" className="ml-auto order-last" onClick={() => setOpen(!open)}>
+      <Button
+        aria-label="Edit Options"
+        className="ml-auto order-last"
+        onClick={() => setOpen(!open)}
+      >
         <ThreeDots />
       </Button>
       {open && (
@@ -24,6 +28,7 @@ const DotMenu = (props: Props) => {
             <li>
               <button
                 className="flex items-center hover:font-bold"
+                aria-label="Edit"
                 onClick={() => {
                   setOpen(false);
                   setEditOpen(true);
@@ -37,6 +42,7 @@ const DotMenu = (props: Props) => {
               <button
                 className="flex items-center hover:font-bold overflow-hidden"
                 onClick={deleteCB}
+                aria-label="Archive"
               >
                 <Trash />
                 &nbsp;Archive

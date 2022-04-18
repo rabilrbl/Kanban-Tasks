@@ -33,9 +33,9 @@ const routes = {
     </SecurePage>
   ),
   "/board/:id": ({ id }: { id: string }) => (
-      <SecurePage>
-        <Board id={Number(id)} />
-      </SecurePage>
+    <SecurePage>
+      <Board id={Number(id)} />
+    </SecurePage>
   ),
   "/todo": () => (
     <SecurePage>

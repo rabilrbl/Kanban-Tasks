@@ -22,7 +22,10 @@ const HorizNavBar = () => {
           name="search"
           placeholder="Search"
         />
-        <button aria-label="Search" className="absolute left-0 pl-3 top-0 mt-5 mr-4">
+        <button
+          aria-label="Search"
+          className="absolute left-0 pl-3 top-0 mt-5 mr-4"
+        >
           <svg
             className="text-gray-600 h-4 w-4 fill-current"
             xmlns="http://www.w3.org/2000/svg"
