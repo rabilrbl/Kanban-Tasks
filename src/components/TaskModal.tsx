@@ -6,6 +6,7 @@ import { request } from "../utils/api";
 import toast from "../utils/toast";
 import FullInput from "./FullInput";
 import Modal from "./Modal";
+import ModalForm from "./ModalForm";
 
 type Props = {
   mode?: "edit";
@@ -41,17 +42,18 @@ const TaskModal = (props: Props) => {
   const [task, setTask] = useState<Task>({
     title: title ? title : "",
     description: description ? description : "",
-    status: status ? status : "pending",
+    status: status!,
     priority: priority ? priority : "low",
     board: boardId,
   });
 
   const [options, setOptions] = useState<TaskOptions>();
+  const [statusOption, setStatusOption] = useState<TaskOptions>();
 
   useEffect(() => {
     if (todoOnly) {
       request
-        .get("/list/boards")
+        .get("/list/boards/")
         .then((response: AxiosResponse) => {
           if (response.status === 200) {
             setOptions(response.data.boards);
@@ -67,43 +69,72 @@ const TaskModal = (props: Props) => {
     }
   }, [todoOnly]);
 
+  useEffect(() => {
+    !todoOnly ? request
+        .get(`/boards/${boardId}/status/`)
+        .then((response: AxiosResponse) => {
+          if (response.status === 200) {
+            setStatusOption(response.data.results);
+            response.data.results.length > 0 &&
+              setTask((t) => ({ ...t, status: response.data.results[0].id }));
+          }
+        })
+        .catch((err) => {
+          toast.error(
+            `Failed to fetch boards list from server. You may face errors when creating form! Reason: ${err}`
+          );
+        }) : request
+        .get(`/status/`)
+        .then((response: AxiosResponse) => {
+          if (response.status === 200) {
+            setStatusOption(response.data.results);
+            response.data.results.length > 0 &&
+              setTask((t) => ({ ...t, status: response.data.results[0].id }));
+          }
+        })
+        .catch((err) => {
+          toast.error(
+            `Failed to fetch boards list from server. You may face errors when creating form! Reason: ${err}`
+          );
+        });
+  },[boardId, todoOnly, update]);
+
   return (
     <Modal isOpen={open} onClose={() => setOpen(false)}>
-      <form
-        className="px-6 pb-4 space-y-6 lg:px-8 sm:pb-6 xl:pb-8"
-        onSubmit={(e) => {
-          setOpen(false);
-          e.preventDefault();
-          if (mode && id) {
-            const r = request
-              .put(`/boards/${boardId}/tasks/${id}/`, task)
-              .then(() => {
+      <ModalForm
+      onSubmit={(e) => {
+        setOpen(false);
+        e.preventDefault();
+        if (mode && id) {
+          const r = request
+            .put(`/boards/${boardId}/tasks/${id}/`, task)
+            .then(() => {
+              setUpdate(!update);
+            });
+          toast.promise(r, {
+            pending: "Updating task...",
+            success: "Task updated successfully",
+            error: "Failed to task board",
+          });
+        } else if (boardId) {
+          const r = request
+            .post(`/boards/${boardId}/tasks/`, task)
+            .then((response) => {
+              if (response.status === 201) {
+                toast.success("Task created successfully");
+                //   navigate(`/boards/${response.data.id}`);
+                setOpen(false);
                 setUpdate(!update);
-              });
-            toast.promise(r, {
-              pending: "Updating task...",
-              success: "Task updated successfully",
-              error: "Failed to task board",
+              }
+            })
+            .catch((e) => {
+              toast.error(`Failed to create task: ${e.message}`);
             });
-          } else if (boardId) {
-            const r = request
-              .post(`/boards/${boardId}/tasks/`, task)
-              .then((response) => {
-                if (response.status === 201) {
-                  toast.success("Task created successfully");
-                  //   navigate(`/boards/${response.data.id}`);
-                  setOpen(false);
-                  setUpdate(!update);
-                }
-              })
-              .catch((e) => {
-                toast.error(`Failed to create task: ${e.message}`);
-              });
-            toast.promise(r, {
-              pending: "Creating task...",
-            });
-          }
-        }}
+          toast.promise(r, {
+            pending: "Creating task...",
+          });
+        }
+      }}
       >
         <h3>{mode ? "Edit Task" : "Create New Task"}</h3>
         <div>
@@ -128,20 +159,18 @@ const TaskModal = (props: Props) => {
           />
         </div>
         <div>
-          <FullInput
+          {<FullInput
             name="status"
             type="select"
             label="Stage"
-            value={task.status}
+            value={task.status ? task.status.toString() : ""}
             onChange={(e) =>
-              setTask({ ...task, status: e.target.value as status })
+              setTask({ ...task, status: Number(e.target.value) })
             }
-            options={[
-              { label: "To Do", value: "pending" },
-              { label: "On Progress", value: "in_progress" },
-              { label: "Done", value: "completed" },
-            ]}
-          />
+            options={statusOption?.map((o) => {
+              return { label: o.title, value: o.id.toString() };
+            })}
+          />}
         </div>
         <div>
           <FullInput
@@ -182,7 +211,7 @@ const TaskModal = (props: Props) => {
         >
           {mode ? "Update Task" : "Create Task"}
         </button>
-      </form>
+      </ModalForm>
     </Modal>
   );
 };

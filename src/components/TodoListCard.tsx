@@ -10,7 +10,7 @@ const TodoListCard = (props: GridProps) => {
   const [open, setOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const fade =
-    props.task.status === "completed"
+    props.task.completed
       ? "opacity-60 line-through decoration-2"
       : "";
   return (

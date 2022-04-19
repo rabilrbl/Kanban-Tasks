@@ -4,7 +4,7 @@ import moment from "moment";
 import toast from "../utils/toast";
 import { navigate } from "raviger";
 import UnderlineTabs from "../components/UnderlineTabs";
-import { Task, TaskItem } from "../types/tasks";
+import { Task,status, Status } from "../types/tasks";
 import { request } from "../utils/api";
 import { AxiosResponse } from "axios";
 import Loader from "../components/ContentLoader";
@@ -31,11 +31,11 @@ const Home = () => {
               {
                 type: "Incomplete Tasks",
                 count:
-                  Number(response.data.todo) + Number(response.data.onprogress),
+                  Number(response.data.incomplete),
               },
               {
                 type: "Completed Tasks",
-                count: response.data.done,
+                count: response.data.completed,
               },
               {
                 type: "Total Tasks",
@@ -52,25 +52,43 @@ const Home = () => {
       });
   }, []);
 
-  const [taskItem, setTaskItem] = useState<TaskItem>("To Do");
+  const [taskStatus, setTaskStatus] = useState<status>();
+  const [stage, setStage] = useState<Status[]>();
   const [taskLoading, setTaskLoading] = useState(true);
+  const [navLinks,setNavLinks] = useState<{
+    name: string;
+    onClick: () => void;
+    id: number;
+  }[]>();
   const [tasks, setTasks] = useState<Task[]>();
 
   useEffect(() => {
-    let status = ((taskItem: TaskItem) => {
-      switch (taskItem) {
-        case "To Do":
-          return "pending";
-        case "On Progress":
-          return "in_progress";
-        case "Done":
-          return "completed";
-        default:
-          throw new Error("Invalid task status");
+    request.get("/status/").then((response: AxiosResponse) => {
+      if (response.status === 200) {
+        setStage(response.data.results);
       }
-    })(taskItem);
+    })
+    .catch((e) => {
+      if (e) {
+        toast.error(`Failed to fetch tasks: ${e.message}`, {
+          toastId: "tasks-fetch-error",
+        });
+      }
+    })
+  },[]);
+
+  useEffect(() => {
+    stage && setNavLinks(stage.map((s) => ({
+      name: s.title,
+      onClick: () => setTaskStatus(s.id),
+      id: s.id
+    })));
+    stage && setTaskStatus(stage[0].id);
+  },[stage]);
+
+  useEffect(() => {
     setTaskLoading(true);
-    request(`/tasks/?status=${status}`)
+    taskStatus && request(`/tasks/?status=${taskStatus}`)
       .then((response: AxiosResponse) => {
         if (response.status !== 200) {
           throw new Error("Failed to fetch tasks");
@@ -87,28 +105,8 @@ const Home = () => {
           });
         }
       });
-  }, [taskItem]);
+  }, [taskStatus]);
 
-  const navLinks = [
-    {
-      name: "To Do",
-      onClick: () => {
-        setTaskItem("To Do");
-      },
-    },
-    {
-      name: "On Progress",
-      onClick: () => {
-        setTaskItem("On Progress");
-      },
-    },
-    {
-      name: "Done",
-      onClick: () => {
-        setTaskItem("Done");
-      },
-    },
-  ];
 
   return (
     <div className="space-y-8">
@@ -138,7 +136,7 @@ const Home = () => {
       <div className="space-y-4">
         <div>
           <h3>My Tasks</h3>
-          <UnderlineTabs navLinks={navLinks} activeTab={taskItem || "To Do"} />
+          {navLinks && <UnderlineTabs activeTab={taskStatus!} navLinks={navLinks} />}
         </div>
         <div className="grid grid-cols-1 gap-5">
           {taskLoading ? (

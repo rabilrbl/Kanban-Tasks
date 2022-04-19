@@ -9,7 +9,7 @@ import TaskModal from "../components/TaskModal";
 // import TaskModal from "../components/TaskModal";
 import TodoCard from "../components/TodoCard";
 import TodoListCard from "../components/TodoListCard";
-import { Task } from "../types/tasks";
+import { Status, Task } from "../types/tasks";
 import { request } from "../utils/api";
 import toast from "../utils/toast";
 
@@ -18,21 +18,19 @@ type Props = {};
 const Todo = (props: Props) => {
   const [update, setUpdate] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [doneLoading, setDoneLoading] = useState(true);
-  const [todoTasks, setTodoTasks] = useState<Task[]>();
-  const [doneTasks, setDoneTasks] = useState<Task[]>();
+  const [tasks, setTasks] = useState<Task[]>();
   const [open, setOpen] = useState(false);
   const [view, setView] = useState<"grid" | "list">("grid");
 
   useEffect(() => {
-    request("/tasks/?status=pending")
+    request("/tasks/")
       .then((response: AxiosResponse) => {
         if (response.status !== 200) {
           throw new Error("Failed to fetch tasks");
         }
         return response.data.results;
       })
-      .then(setTodoTasks)
+      .then(setTasks)
       .then(() => setUpdate(false))
       .catch((e) => {
         setUpdate(false);
@@ -45,50 +43,25 @@ const Todo = (props: Props) => {
       .finally(() => setLoading(false));
   }, [update]);
 
-  useEffect(() => {
-    request("/tasks/?status=completed")
-      .then((response: AxiosResponse) => {
-        if (response.status !== 200) {
-          throw new Error("Failed to fetch tasks");
-        }
-        return response.data.results;
-      })
-      .then(setDoneTasks)
-      .then(() => setUpdate(false))
-      .catch((e) => {
-        setUpdate(false);
-        if (e) {
-          toast.error(`Failed to fetch tasks: ${e.message}`, {
-            toastId: "tasks-fetch-error",
-          });
-        }
-      })
-      .finally(() => setDoneLoading(false));
-  }, [update]);
-
-  const onDone = (id: number, status: "pending" | "completed") => {
-    if (status === "pending") {
-      let task = doneTasks?.find((task) => task.id === id);
-      setDoneTasks(doneTasks?.filter((task) => task.id !== id));
-      task!.status = status;
-      todoTasks && setTodoTasks([...todoTasks, task!]);
-    } else if (status === "completed") {
-      let task = todoTasks?.find((task) => task.id === id);
-      setTodoTasks(todoTasks?.filter((task) => task.id !== id));
-      task!.status = status;
-      doneTasks && setDoneTasks([...doneTasks, task!]);
-    }
-    request.patch(`/tasks/${id}/`, { status: status }).catch((e) => {
-      if (e) {
-        toast.error(
-          `Failed to update task, Your changes won't be reflected on server. Reason: ${e.message}`,
-          {
-            toastId: "task-status-update-error",
-          }
-        );
+  const onDone = (id:number,  completed:boolean) => {
+    setTasks((tasks) => tasks!.map((task) => {
+      if (task.id === id) {
+        task.completed = completed;
       }
-    });
-  };
+      return task;
+
+    }
+    ));
+    request.patch(`/tasks/${id}/`, {completed:true})
+      .catch((e) => {
+      if (e) {
+        toast.error(`Failed to update task, your changes may not be reflected on server: ${e.message}`, {
+          toastId: "task-update-error",
+        });
+      }
+    })
+  }
+
   return (
     <PageDiv
       heading="Todo"
@@ -132,26 +105,7 @@ const Todo = (props: Props) => {
               <Loader />
             </>
           ) : (
-            todoTasks?.map((task, i) => {
-              return (
-                <TodoCard
-                  key={i}
-                  update={update}
-                  onDone={onDone}
-                  setUpdate={setUpdate}
-                  task={task}
-                />
-              );
-            })
-          )}
-          {doneLoading ? (
-            <>
-              <Loader />
-              <Loader />
-              <Loader />
-            </>
-          ) : (
-            doneTasks?.map((task, i) => {
+            tasks?.map((task, i) => {
               return (
                 <TodoCard
                   key={i}
@@ -175,26 +129,7 @@ const Todo = (props: Props) => {
               <Loader />
             </>
           ) : (
-            todoTasks?.map((task, i) => {
-              return (
-                <TodoListCard
-                  key={i}
-                  update={update}
-                  onDone={onDone}
-                  setUpdate={setUpdate}
-                  task={task}
-                />
-              );
-            })
-          )}
-          {doneLoading ? (
-            <>
-              <Loader />
-              <Loader />
-              <Loader />
-            </>
-          ) : (
-            doneTasks?.map((task, i) => {
+            tasks?.map((task, i) => {
               return (
                 <TodoListCard
                   key={i}
