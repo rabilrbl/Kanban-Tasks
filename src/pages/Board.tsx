@@ -6,7 +6,7 @@ import TaskCard from "../components/TaskCard";
 import TaskCardParent from "../components/TaskCardParent";
 import TaskModal from "../components/TaskModal";
 import { BoardType } from "../types/boards";
-import { stagesType, Task } from "../types/tasks";
+import { stagesType } from "../types/tasks";
 import { request } from "../utils/api";
 import toast from "../utils/toast";
 import { DragDropContext, Draggable, Droppable } from "@react-forked/dnd";
@@ -70,21 +70,24 @@ const Board = ({ id }: { id: number }) => {
       const taskId = Number(result.draggableId);
       const destId = Number(destination.droppableId);
       const sourceId = Number(source.droppableId);
-      console.log("task: ", taskId, "Dest: ", destId, "Source: ", sourceId);
-      let task: Task;
-      stages &&
-        setStages(
-          stages.map((t) => {
-            if (t.id === sourceId) {
-              task = t.tasks.find((t) => t.id === taskId)!;
-              t.tasks = t.tasks.filter((t) => t.id !== taskId);
-            } else if (t.id === destId) {
-              task = { ...task, status: destId };
-              t.tasks.push(task);
-            }
-            return t;
-          })
-        );
+      setStages((prev) => {
+        const newStages = [...prev!];
+        const sourceStage = newStages.find((stage) => stage.id === sourceId);
+        const destStage = newStages.find((stage) => stage.id === destId);
+        const task = sourceStage!.tasks.find((task) => task.id === taskId);
+        task!.status = destStage!.id;
+        if (task && destStage) {
+          const newTasks = [...destStage.tasks];
+          newTasks.push(task);
+          destStage.tasks = newTasks;
+          sourceStage!.tasks = sourceStage!.tasks.filter(
+            (task) => task.id !== taskId
+          );
+          return newStages;
+        }
+        return prev;
+      }
+      );
       request.patch(`/tasks/${taskId}/`, { status: destId }).catch((e) => {
         if (e) {
           toast.error(`Failed to update task: ${e.message}`, {
