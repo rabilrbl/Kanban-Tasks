@@ -10,9 +10,7 @@ const TodoCard = (props: GridProps) => {
   const [open, setOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const fade =
-    props.task.completed === true
-      ? "opacity-60 line-through decoration-2"
-      : "";
+    props.task.completed === true ? "opacity-60 line-through decoration-2" : "";
   return (
     <div>
       <TaskModal
@@ -30,7 +28,7 @@ const TodoCard = (props: GridProps) => {
       />
       <div
         className={
-          "flex flex-col p-4 space-y-3 min-w-fit min-h-[12rem] text-gray-50 bg-gray-800 drop-shadow-lg rounded-xl " +
+          "flex flex-col p-4 space-y-3 min-w-fit min-h-[12rem] text-gray-50 bg-gray-800 drop-shadow-lg rounded-xl transition-all delay-150 " +
           fade
         }
       >

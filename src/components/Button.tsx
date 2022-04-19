@@ -1,7 +1,8 @@
 import React from "react";
+import Board from "./icons/Board";
 import CombinedShape from "./icons/CombinedShape";
 
-type buttonType = "fullGray" | "newBoard";
+type buttonType = "fullGray" | "newBoard" | "newStage";
 
 type Props = {
   type?: buttonType;
@@ -39,6 +40,21 @@ const Button = (props: Props) => {
           }
         >
           <CombinedShape h="18" w="18" />
+          &nbsp;&nbsp;
+          {children}
+        </button>
+      );
+    case "newStage":
+      return (
+        <button
+          type="button"
+          onClick={onClick}
+          className={
+            "text-zinc-100 bg-gray-800 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 " +
+            className
+          }
+        >
+          <Board />
           &nbsp;&nbsp;
           {children}
         </button>

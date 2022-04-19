@@ -4,7 +4,7 @@ import moment from "moment";
 import toast from "../utils/toast";
 import { navigate } from "raviger";
 import UnderlineTabs from "../components/UnderlineTabs";
-import { Task,status, Status } from "../types/tasks";
+import { Task, status, Status } from "../types/tasks";
 import { request } from "../utils/api";
 import { AxiosResponse } from "axios";
 import Loader from "../components/ContentLoader";
@@ -30,8 +30,7 @@ const Home = () => {
             tasks: [
               {
                 type: "Incomplete Tasks",
-                count:
-                  Number(response.data.incomplete),
+                count: Number(response.data.incomplete),
               },
               {
                 type: "Completed Tasks",
@@ -55,58 +54,65 @@ const Home = () => {
   const [taskStatus, setTaskStatus] = useState<status>();
   const [stage, setStage] = useState<Status[]>();
   const [taskLoading, setTaskLoading] = useState(true);
-  const [navLinks,setNavLinks] = useState<{
-    name: string;
-    onClick: () => void;
-    id: number;
-  }[]>();
+  const [navLinks, setNavLinks] = useState<
+    {
+      name: string;
+      onClick: () => void;
+      id: number;
+    }[]
+  >();
   const [tasks, setTasks] = useState<Task[]>();
 
   useEffect(() => {
-    request.get("/status/").then((response: AxiosResponse) => {
-      if (response.status === 200) {
-        setStage(response.data.results);
-      }
-    })
-    .catch((e) => {
-      if (e) {
-        toast.error(`Failed to fetch tasks: ${e.message}`, {
-          toastId: "tasks-fetch-error",
-        });
-      }
-    })
-  },[]);
-
-  useEffect(() => {
-    stage && setNavLinks(stage.map((s) => ({
-      name: s.title,
-      onClick: () => setTaskStatus(s.id),
-      id: s.id
-    })));
-    stage && setTaskStatus(stage[0].id);
-  },[stage]);
-
-  useEffect(() => {
-    setTaskLoading(true);
-    taskStatus && request(`/tasks/?status=${taskStatus}`)
+    request
+      .get("/status/")
       .then((response: AxiosResponse) => {
-        if (response.status !== 200) {
-          throw new Error("Failed to fetch tasks");
+        if (response.status === 200) {
+          setStage(response.data.results);
         }
-        return response.data.results;
       })
-      .then(setTasks)
-      .then(() => setTaskLoading(false))
       .catch((e) => {
-        setTaskLoading(false);
         if (e) {
           toast.error(`Failed to fetch tasks: ${e.message}`, {
             toastId: "tasks-fetch-error",
           });
         }
       });
-  }, [taskStatus]);
+  }, []);
 
+  useEffect(() => {
+    stage &&
+      setNavLinks(
+        stage.map((s) => ({
+          name: s.title,
+          onClick: () => setTaskStatus(s.id),
+          id: s.id,
+        }))
+      );
+    stage && setTaskStatus(stage[0].id);
+  }, [stage]);
+
+  useEffect(() => {
+    setTaskLoading(true);
+    taskStatus &&
+      request(`/tasks/?status=${taskStatus}`)
+        .then((response: AxiosResponse) => {
+          if (response.status !== 200) {
+            throw new Error("Failed to fetch tasks");
+          }
+          return response.data.results;
+        })
+        .then(setTasks)
+        .then(() => setTaskLoading(false))
+        .catch((e) => {
+          setTaskLoading(false);
+          if (e) {
+            toast.error(`Failed to fetch tasks: ${e.message}`, {
+              toastId: "tasks-fetch-error",
+            });
+          }
+        });
+  }, [taskStatus]);
 
   return (
     <div className="space-y-8">
@@ -136,7 +142,9 @@ const Home = () => {
       <div className="space-y-4">
         <div>
           <h3>My Tasks</h3>
-          {navLinks && <UnderlineTabs activeTab={taskStatus!} navLinks={navLinks} />}
+          {navLinks && (
+            <UnderlineTabs activeTab={taskStatus!} navLinks={navLinks} />
+          )}
         </div>
         <div className="grid grid-cols-1 gap-5">
           {taskLoading ? (

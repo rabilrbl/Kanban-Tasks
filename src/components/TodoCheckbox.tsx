@@ -14,13 +14,9 @@ const TodoCheckbox = (props: Props) => {
       className="h-6 w-6 text-gray-700 ring-2 ring-gray-50 rounded-full focus:border-none focus:outline-none focus:ring-gray-500"
       onChange={(e) => {
         if (e.target.checked) {
-          props.onDone &&
-            props.task.id &&
-            props.onDone(props.task.id, true);
+          props.onDone && props.task.id && props.onDone(props.task.id, true);
         } else {
-          props.onDone &&
-            props.task.id &&
-            props.onDone(props.task.id, false);
+          props.onDone && props.task.id && props.onDone(props.task.id, false);
         }
       }}
     />

@@ -70,71 +70,73 @@ const TaskModal = (props: Props) => {
   }, [todoOnly]);
 
   useEffect(() => {
-    !todoOnly ? request
-        .get(`/boards/${boardId}/status/`)
-        .then((response: AxiosResponse) => {
-          if (response.status === 200) {
-            setStatusOption(response.data.results);
-            response.data.results.length > 0 &&
-              setTask((t) => ({ ...t, status: response.data.results[0].id }));
-          }
-        })
-        .catch((err) => {
-          toast.error(
-            `Failed to fetch boards list from server. You may face errors when creating form! Reason: ${err}`
-          );
-        }) : request
-        .get(`/status/`)
-        .then((response: AxiosResponse) => {
-          if (response.status === 200) {
-            setStatusOption(response.data.results);
-            response.data.results.length > 0 &&
-              setTask((t) => ({ ...t, status: response.data.results[0].id }));
-          }
-        })
-        .catch((err) => {
-          toast.error(
-            `Failed to fetch boards list from server. You may face errors when creating form! Reason: ${err}`
-          );
-        });
-  },[boardId, todoOnly, update]);
+    !todoOnly
+      ? request
+          .get(`/boards/${boardId}/status/`)
+          .then((response: AxiosResponse) => {
+            if (response.status === 200) {
+              setStatusOption(response.data.results);
+              response.data.results.length > 0 &&
+                setTask((t) => ({ ...t, status: response.data.results[0].id }));
+            }
+          })
+          .catch((err) => {
+            toast.error(
+              `Failed to fetch boards list from server. You may face errors when creating form! Reason: ${err}`
+            );
+          })
+      : request
+          .get(`/status/`)
+          .then((response: AxiosResponse) => {
+            if (response.status === 200) {
+              setStatusOption(response.data.results);
+              response.data.results.length > 0 &&
+                setTask((t) => ({ ...t, status: response.data.results[0].id }));
+            }
+          })
+          .catch((err) => {
+            toast.error(
+              `Failed to fetch boards list from server. You may face errors when creating form! Reason: ${err}`
+            );
+          });
+  }, [boardId, todoOnly, update]);
 
   return (
     <Modal isOpen={open} onClose={() => setOpen(false)}>
       <ModalForm
-      onSubmit={(e) => {
-        setOpen(false);
-        e.preventDefault();
-        if (mode && id) {
-          const r = request
-            .put(`/boards/${boardId}/tasks/${id}/`, task)
-            .then(() => {
-              setUpdate(!update);
-            });
-          toast.promise(r, {
-            pending: "Updating task...",
-            success: "Task updated successfully",
-            error: "Failed to task board",
-          });
-        } else if (boardId) {
-          const r = request
-            .post(`/boards/${boardId}/tasks/`, task)
-            .then((response) => {
-              if (response.status === 201) {
-                toast.success("Task created successfully");
-                //   navigate(`/boards/${response.data.id}`);
-                setOpen(false);
+        onSubmit={(e) => {
+          setOpen(false);
+          e.preventDefault();
+          if (mode && id) {
+            const r = request
+              .put(`/boards/${boardId}/tasks/${id}/`, task)
+              .then(() => {
                 setUpdate(!update);
-              }
-            })
-            .catch((e) => {
-              toast.error(`Failed to create task: ${e.message}`);
+              });
+            toast.promise(r, {
+              pending: "Updating task...",
+              success: "Task updated successfully",
+              error: "Failed to task board",
             });
-          toast.promise(r, {
-            pending: "Creating task...",
-          });
-        }
-      }}
+          } else if (boardId) {
+            const r = request
+              .post(`/boards/${boardId}/tasks/`, task)
+              .then((response) => {
+                if (response.status === 201) {
+                  toast.success("Task created successfully");
+                  //   navigate(`/boards/${response.data.id}`);
+                  setOpen(false);
+                  setUpdate(!update);
+                }
+              })
+              .catch((e) => {
+                toast.error(`Failed to create task: ${e.message}`);
+              });
+            toast.promise(r, {
+              pending: "Creating task...",
+            });
+          }
+        }}
       >
         <h3>{mode ? "Edit Task" : "Create New Task"}</h3>
         <div>
@@ -159,18 +161,20 @@ const TaskModal = (props: Props) => {
           />
         </div>
         <div>
-          {<FullInput
-            name="status"
-            type="select"
-            label="Stage"
-            value={task.status ? task.status.toString() : ""}
-            onChange={(e) =>
-              setTask({ ...task, status: Number(e.target.value) })
-            }
-            options={statusOption?.map((o) => {
-              return { label: o.title, value: o.id.toString() };
-            })}
-          />}
+          {
+            <FullInput
+              name="status"
+              type="select"
+              label="Stage"
+              value={task.status ? task.status.toString() : ""}
+              onChange={(e) =>
+                setTask({ ...task, status: Number(e.target.value) })
+              }
+              options={statusOption?.map((o) => {
+                return { label: o.title, value: o.id.toString() };
+              })}
+            />
+          }
         </div>
         <div>
           <FullInput

@@ -70,19 +70,17 @@ const Board = ({ id }: { id: number }) => {
       const taskId = Number(result.draggableId);
       const destId = Number(destination.droppableId);
       const sourceId = Number(source.droppableId);
-      console.log("task: ",taskId, "Dest: ", destId, "Source: ", sourceId);
+      console.log("task: ", taskId, "Dest: ", destId, "Source: ", sourceId);
       let task: Task;
       stages &&
         setStages(
           stages.map((t) => {
-            switch(t.id){
-              case sourceId:
-                task = t.tasks.find((t) => t.id === taskId)!;
-              t.tasks = t.tasks.filter((task) => task.id !== taskId);
-              break;
-              case destId:
-                t.tasks = [...t.tasks, task];
-                break;
+            if (t.id === sourceId) {
+              task = t.tasks.find((t) => t.id === taskId)!;
+              t.tasks = t.tasks.filter((t) => t.id !== taskId);
+            } else if (t.id === destId) {
+              task = { ...task, status: destId };
+              t.tasks.push(task);
             }
             return t;
           })
@@ -111,9 +109,9 @@ const Board = ({ id }: { id: number }) => {
         />
       }
       extras={
-        <Button className="" type="newBoard" onClick={() => setStageOpen(true)}>
-            Add Stage
-          </Button>
+        <Button className="" type="newStage" onClick={() => setStageOpen(true)}>
+          Add Stage
+        </Button>
       }
     >
       <GridFlow>
@@ -131,6 +129,10 @@ const Board = ({ id }: { id: number }) => {
                         provided={provided}
                         heading={d.title}
                         count={d.count}
+                        boardId={id}
+                        id={d.id}
+                        update={update}
+                        setUpdate={setUpdate}
                       >
                         {d.tasks.length > 0 ? (
                           d.tasks.map((t, i) => {
@@ -138,7 +140,7 @@ const Board = ({ id }: { id: number }) => {
                               <React.Fragment key={i}>
                                 {
                                   <Draggable
-                                    key={t.id!.toString()}
+                                    key={t.id?.toString()}
                                     draggableId={t.id!.toString()}
                                     index={i}
                                   >
@@ -177,7 +179,14 @@ const Board = ({ id }: { id: number }) => {
           )}
         </DragDropContext>
       </GridFlow>
-      <StageModal boardId={id} update={update} setUpdate={setUpdate} open={stageOpen} setOpen={setStageOpen} />
+      <StageModal
+        edit={false}
+        boardId={id}
+        update={update}
+        setUpdate={setUpdate}
+        open={stageOpen}
+        setOpen={setStageOpen}
+      />
       <TaskModal
         update={update}
         setUpdate={setUpdate}

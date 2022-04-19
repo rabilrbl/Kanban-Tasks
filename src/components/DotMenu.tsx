@@ -17,7 +17,7 @@ const DotMenu = (props: Props) => {
     <div className="relative">
       <Button
         aria-label="Edit Options"
-        className="ml-auto order-last"
+        className="ml-auto order-last "
         onClick={() => setOpen(!open)}
       >
         <ThreeDots />

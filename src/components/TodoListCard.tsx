@@ -9,10 +9,9 @@ import TodoCheckbox from "./TodoCheckbox";
 const TodoListCard = (props: GridProps) => {
   const [open, setOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
-  const fade =
-    props.task.completed
-      ? "opacity-60 line-through decoration-2"
-      : "";
+  const fade = props.task.completed
+    ? "opacity-60 line-through decoration-2"
+    : "";
   return (
     <div>
       <TaskModal

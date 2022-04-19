@@ -9,7 +9,7 @@ import TaskModal from "../components/TaskModal";
 // import TaskModal from "../components/TaskModal";
 import TodoCard from "../components/TodoCard";
 import TodoListCard from "../components/TodoListCard";
-import { Status, Task } from "../types/tasks";
+import { Task } from "../types/tasks";
 import { request } from "../utils/api";
 import toast from "../utils/toast";
 
@@ -43,24 +43,26 @@ const Todo = (props: Props) => {
       .finally(() => setLoading(false));
   }, [update]);
 
-  const onDone = (id:number,  completed:boolean) => {
-    setTasks((tasks) => tasks!.map((task) => {
-      if (task.id === id) {
-        task.completed = completed;
-      }
-      return task;
-
-    }
-    ));
-    request.patch(`/tasks/${id}/`, {completed:true})
-      .catch((e) => {
+  const onDone = (id: number, completed: boolean) => {
+    setTasks((tasks) =>
+      tasks!.map((task) => {
+        if (task.id === id) {
+          task.completed = completed;
+        }
+        return task;
+      })
+    );
+    request.patch(`/tasks/${id}/`, { completed: completed }).catch((e) => {
       if (e) {
-        toast.error(`Failed to update task, your changes may not be reflected on server: ${e.message}`, {
-          toastId: "task-update-error",
-        });
+        toast.error(
+          `Failed to update task, your changes may not be reflected on server: ${e.message}`,
+          {
+            toastId: "task-update-error",
+          }
+        );
       }
-    })
-  }
+    });
+  };
 
   return (
     <PageDiv
@@ -107,13 +109,36 @@ const Todo = (props: Props) => {
           ) : (
             tasks?.map((task, i) => {
               return (
-                <TodoCard
-                  key={i}
-                  update={update}
-                  onDone={onDone}
-                  setUpdate={setUpdate}
-                  task={task}
-                />
+                task.completed === false && (
+                  <TodoCard
+                    key={i}
+                    update={update}
+                    onDone={onDone}
+                    setUpdate={setUpdate}
+                    task={task}
+                  />
+                )
+              );
+            })
+          )}
+          {loading ? (
+            <>
+              <Loader />
+              <Loader />
+              <Loader />
+            </>
+          ) : (
+            tasks?.map((task, i) => {
+              return (
+                task.completed === true && (
+                  <TodoCard
+                    key={i}
+                    update={update}
+                    onDone={onDone}
+                    setUpdate={setUpdate}
+                    task={task}
+                  />
+                )
               );
             })
           )}
