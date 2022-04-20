@@ -103,7 +103,7 @@ const TaskModal = (props: Props) => {
               `Failed to fetch boards list from server. You may face errors when creating form! Reason: ${err}`
             );
           });
-  }, [boardId, todoOnly, update]);
+  }, [boardId, todoOnly, update, status]);
 
   return (
     <Modal isOpen={open} onClose={() => setOpen(false)}>
