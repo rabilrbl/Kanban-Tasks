@@ -1,12 +1,12 @@
 import { AxiosResponse } from "axios";
 import React, { useState, useEffect } from "react";
+import AlertInfo from "../components/AlertInfo";
 import Loader from "../components/ContentLoader";
 import GridFlow from "../components/GridFlow";
 import Block from "../components/icons/Block";
 import List from "../components/icons/List";
 import PageDiv from "../components/PageDiv";
 import TaskModal from "../components/TaskModal";
-// import TaskModal from "../components/TaskModal";
 import TodoCard from "../components/TodoCard";
 import TodoListCard from "../components/TodoListCard";
 import { Task } from "../types/tasks";
@@ -71,6 +71,12 @@ const Todo = (props: Props) => {
       buttonCB={() => {
         setOpen(true);
       }}
+      startExtras={
+        <AlertInfo
+          title="Note: "
+          message="These changes might not reflect on your board!"
+        />
+      }
       extras={
         <>
           <button
