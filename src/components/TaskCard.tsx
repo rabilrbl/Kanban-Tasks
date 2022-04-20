@@ -42,7 +42,7 @@ const TaskCard = (props: Props) => {
         {...props.provided.draggableProps}
         {...props.provided.dragHandleProps}
         onClick={() => setEditOpen(true)}
-        className="flex flex-col p-4 truncate space-y-3 min-h-[12rem] text-gray-50 bg-gray-800 drop-shadow-lg rounded-xl"
+        className="flex flex-col p-4 space-y-3 min-h-[12rem] text-gray-50 bg-gray-800 drop-shadow-lg rounded-xl"
       >
         <div className="flex items-center justify-between">
           <SmallBadge text={props.priority} />

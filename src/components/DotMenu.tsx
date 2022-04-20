@@ -32,7 +32,8 @@ const DotMenu = (props: Props) => {
               <button
                 className="flex items-center hover:font-bold"
                 aria-label="Edit"
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   setOpen(false);
                   setEditOpen(true);
                 }}
@@ -44,7 +45,10 @@ const DotMenu = (props: Props) => {
             <li>
               <button
                 className="flex items-center hover:font-bold overflow-hidden"
-                onClick={deleteCB}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  deleteCB();
+                }}
                 aria-label="Archive"
               >
                 <Trash />
