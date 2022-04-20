@@ -20,7 +20,7 @@ const DotMenu = (props: Props) => {
         className="ml-auto order-last "
         onClick={(e) => {
           e.stopPropagation();
-          setOpen(!open)
+          setOpen(!open);
         }}
       >
         <ThreeDots />

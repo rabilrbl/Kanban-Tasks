@@ -68,9 +68,7 @@ const TaskCard = (props: Props) => {
           />
         </div>
         <h3>{props.title}</h3>
-        <div
-          className="flex flex-col justify-start"
-        >
+        <div className="flex flex-col justify-start">
           <p className="text-sm">
             {props.description ? (
               props.description

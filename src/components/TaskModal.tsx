@@ -76,9 +76,12 @@ const TaskModal = (props: Props) => {
           .then((response: AxiosResponse) => {
             if (response.status === 200) {
               setStatusOption(response.data.results);
-              if(task.status === -1) {
+              if (task.status === -1) {
                 response.data.results.length > 0 &&
-                setTask((t) => ({ ...t, status: response.data.results[0].id }));
+                  setTask((t) => ({
+                    ...t,
+                    status: response.data.results[0].id,
+                  }));
               }
             }
           })
@@ -163,8 +166,8 @@ const TaskModal = (props: Props) => {
           />
         </div>
         <div>
-          {
-           (statusOption && statusOption!.length) ?  <FullInput
+          {statusOption && statusOption!.length ? (
+            <FullInput
               name="status"
               type="select"
               label="Stage"
@@ -175,8 +178,12 @@ const TaskModal = (props: Props) => {
               options={statusOption?.map((o) => {
                 return { label: o.title, value: o.id.toString() };
               })}
-            /> : <b className="text-red-500">No stages are available. Add new stage to continue</b>
-          }
+            />
+          ) : (
+            <b className="text-red-500">
+              No stages are available. Add new stage to continue
+            </b>
+          )}
         </div>
         <div>
           <FullInput

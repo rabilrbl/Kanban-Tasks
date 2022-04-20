@@ -88,8 +88,7 @@ const Board = ({ id }: { id: number }) => {
           return newStages;
         }
         return prev;
-      }
-      );
+      });
       request.patch(`/tasks/${taskId}/`, { status: destId }).catch((e) => {
         if (e) {
           toast.error(`Failed to update task: ${e.message}`, {
@@ -149,19 +148,21 @@ const Board = ({ id }: { id: number }) => {
                                     draggableId={t.id!.toString()}
                                     index={i}
                                   >
-                                    {(provided) => (
-                                      t.status && <TaskCard
-                                        boardId={id}
-                                        id={t.id!}
-                                        title={t.title}
-                                        description={t.description!}
-                                        priority={t.priority}
-                                        update={update}
-                                        status={t.status}
-                                        setUpdate={setUpdate}
-                                        provided={provided}
-                                      />
-                                    )}
+                                    {(provided) =>
+                                      t.status && (
+                                        <TaskCard
+                                          boardId={id}
+                                          id={t.id!}
+                                          title={t.title}
+                                          description={t.description!}
+                                          priority={t.priority}
+                                          update={update}
+                                          status={t.status}
+                                          setUpdate={setUpdate}
+                                          provided={provided}
+                                        />
+                                      )
+                                    }
                                   </Draggable>
                                 }
                               </React.Fragment>
