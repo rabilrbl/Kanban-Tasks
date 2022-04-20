@@ -80,9 +80,11 @@ const Board = ({ id }: { id: number }) => {
           const newTasks = [...destStage.tasks];
           newTasks.push(task);
           destStage.tasks = newTasks;
+          destStage.count = newTasks.length;
           sourceStage!.tasks = sourceStage!.tasks.filter(
             (task) => task.id !== taskId
           );
+          sourceStage!.count = sourceStage!.tasks.length;
           return newStages;
         }
         return prev;
