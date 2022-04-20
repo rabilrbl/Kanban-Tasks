@@ -4,7 +4,7 @@ type Props = {
   label?: string;
   type?: string;
   name: string;
-  value?: string;
+  value?: string | number;
   placeholder?: string;
   required?: boolean;
   options?: {

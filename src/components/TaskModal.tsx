@@ -42,7 +42,7 @@ const TaskModal = (props: Props) => {
   const [task, setTask] = useState<Task>({
     title: title ? title : "",
     description: description ? description : "",
-    status: status!,
+    status: status ? status : -1,
     priority: priority ? priority : "low",
     board: boardId,
   });
@@ -76,11 +76,9 @@ const TaskModal = (props: Props) => {
           .then((response: AxiosResponse) => {
             if (response.status === 200) {
               setStatusOption(response.data.results);
-              if(status){
-                setTask((t) => ({ ...t, status: status }));
-              } else {
+              if(task.status === -1) {
                 response.data.results.length > 0 &&
-                  setTask((t) => ({ ...t, status: response.data.results[0].id }));
+                setTask((t) => ({ ...t, status: response.data.results[0].id }));
               }
             }
           })
@@ -103,7 +101,7 @@ const TaskModal = (props: Props) => {
               `Failed to fetch boards list from server. You may face errors when creating form! Reason: ${err}`
             );
           });
-  }, [boardId, todoOnly, update, status]);
+  }, [boardId, todoOnly, update, status, task.status]);
 
   return (
     <Modal isOpen={open} onClose={() => setOpen(false)}>
@@ -170,7 +168,7 @@ const TaskModal = (props: Props) => {
               name="status"
               type="select"
               label="Stage"
-              value={task.status?.toString()}
+              value={task.status}
               onChange={(e) =>
                 setTask({ ...task, status: Number(e.target.value) })
               }

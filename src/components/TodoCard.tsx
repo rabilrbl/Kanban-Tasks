@@ -28,7 +28,7 @@ const TodoCard = (props: GridProps) => {
       />
       <div
         className={
-          "flex flex-col p-4 space-y-3 min-w-fit min-h-[12rem] text-gray-50 bg-gray-800 drop-shadow-lg rounded-xl transition-all delay-150 " +
+          "flex flex-col p-4 space-y-3 min-w-lg truncate min-h-[12rem] text-gray-50 bg-gray-800 drop-shadow-lg rounded-xl transition-all delay-150 " +
           fade
         }
       >

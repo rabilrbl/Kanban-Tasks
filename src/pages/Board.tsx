@@ -150,7 +150,7 @@ const Board = ({ id }: { id: number }) => {
                                     index={i}
                                   >
                                     {(provided) => (
-                                      <TaskCard
+                                      t.status && <TaskCard
                                         boardId={id}
                                         id={t.id!}
                                         title={t.title}
