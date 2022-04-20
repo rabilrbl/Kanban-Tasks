@@ -28,7 +28,7 @@ const TodoCard = (props: GridProps) => {
       />
       <div
         className={
-          "flex flex-col p-4 space-y-3 min-w-lg truncate min-h-[12rem] text-gray-50 bg-gray-800 drop-shadow-lg rounded-xl transition-all delay-150 " +
+          "flex flex-col p-4 space-y-3 min-w-lg text-ellipsis min-h-[12rem] text-gray-50 bg-gray-800 drop-shadow-lg rounded-xl transition-all delay-150 " +
           fade
         }
       >
@@ -48,7 +48,7 @@ const TodoCard = (props: GridProps) => {
             )}
           </p>
         </div>
-        <div className="flex items-center justify-end z-50 bottom-2 right-4">
+        <div className="flex items-center justify-end bottom-2 right-4">
           <DotMenu
             open={open}
             setOpen={setOpen}
