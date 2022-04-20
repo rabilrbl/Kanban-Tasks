@@ -25,7 +25,7 @@ const AlertInfo = (props: Props) => {
         ></path>
       </svg>
       <div>
-        <span className="font-medium">{props.title}</span> {props.message}
+        <span className="font-bold">{props.title}</span> {props.message}
       </div>
       <button
         onClick={() => setOpen(false)}
