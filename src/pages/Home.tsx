@@ -89,7 +89,7 @@ const Home = () => {
           id: s.id,
         }))
       );
-    stage && setTaskStatus(stage[0].id);
+    stage && stage.length > 0 ? setTaskStatus(stage[0].id) : setTaskLoading(false);
   }, [stage]);
 
   useEffect(() => {
@@ -142,9 +142,9 @@ const Home = () => {
       <div className="space-y-4">
         <div>
           <h3>My Tasks</h3>
-          {navLinks && (
+          {navLinks ? (
             <UnderlineTabs activeTab={taskStatus!} navLinks={navLinks} />
-          )}
+          ): <b>No Stages are available</b>}
         </div>
         <div className="grid grid-cols-1 gap-5">
           {taskLoading ? (

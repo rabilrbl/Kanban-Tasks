@@ -128,7 +128,7 @@ const Todo = (props: Props) => {
               <Loader />
             </>
           ) : (
-            tasks?.map((task, i) => {
+            tasks && tasks.length ? (tasks?.map((task, i) => {
               return (
                 task.completed === true && (
                   <TodoCard
@@ -140,7 +140,9 @@ const Todo = (props: Props) => {
                   />
                 )
               );
-            })
+            })) : (
+              <h3>No Todo Task Found</h3>
+            )
           )}
         </GridFlow>
       )}
@@ -154,7 +156,7 @@ const Todo = (props: Props) => {
               <Loader />
             </>
           ) : (
-            tasks?.map((task, i) => {
+            tasks && tasks.length ? (tasks?.map((task, i) => {
               return (
                 <TodoListCard
                   key={i}
@@ -164,7 +166,9 @@ const Todo = (props: Props) => {
                   task={task}
                 />
               );
-            })
+            })) : (
+              <h3>No Todo Task found!</h3>
+            )
           )}
         </div>
       )}
