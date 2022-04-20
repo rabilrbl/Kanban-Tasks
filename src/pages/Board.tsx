@@ -123,7 +123,7 @@ const Board = ({ id }: { id: number }) => {
           {loading ? (
             <Loader />
           ) : (
-            stages &&
+            stages && stages.length ?
             stages.map((d, i) => {
               return (
                 d && (
@@ -181,7 +181,7 @@ const Board = ({ id }: { id: number }) => {
                   </Droppable>
                 )
               );
-            })
+            }): <h3>No Stages Found</h3>
           )}
         </DragDropContext>
       </GridFlow>
