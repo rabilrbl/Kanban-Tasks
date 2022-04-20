@@ -18,7 +18,10 @@ const DotMenu = (props: Props) => {
       <Button
         aria-label="Edit Options"
         className="ml-auto order-last "
-        onClick={() => setOpen(!open)}
+        onClick={(e) => {
+          e.stopPropagation();
+          setOpen(!open)
+        }}
       >
         <ThreeDots />
       </Button>

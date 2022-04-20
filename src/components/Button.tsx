@@ -6,7 +6,7 @@ type buttonType = "fullGray" | "newBoard" | "newStage";
 
 type Props = {
   type?: buttonType;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   children: React.ReactNode;
   className?: string;
   disabled?: boolean;
